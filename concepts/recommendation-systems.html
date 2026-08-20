@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recommendation Systems — AI, Explained</title>
+<meta name="description" content="How platforms like Netflix, Amazon, and Spotify decide what to show you — collaborative filtering, content-based filtering, and modern deep learning approaches.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Applied AI & Infrastructure</h4>
+    <ul>
+      <li><a href="computer-vision-speech.html">Computer vision & speech</a></li>
+      <li><a href="recommendation-systems.html" class="current">Recommendation systems</a></li>
+      <li><a href="gpus-tpus-parallelism.html">GPUs, TPUs & parallel training</a></li>
+      <li><a href="vector-databases-mlops.html">Vector databases & MLOps</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="computer-vision-speech.html">Computer Vision & Speech</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="gpus-tpus-parallelism.html">GPUs, TPUs & Parallel Training</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Applied AI &middot; Concept 02</span>
+    <h1>Recommendation Systems</h1>
+    <p class="dek">Quietly one of the highest-revenue-impact applications of ML in existence — the algorithm deciding your next video, product, or song is doing real, substantial machine learning.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Collaborative filtering</strong> recommends things based on what similar users liked — "people who enjoyed what you enjoyed also liked this" — without needing to understand anything about the content itself, purely from patterns in user behavior.</p><p><strong>Content-based filtering</strong> instead looks at the properties of items you've liked before — genre, actors, audio features — and recommends similar items, which works even for brand-new items with no user interaction history yet.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Classical collaborative filtering uses <strong>matrix factorization</strong>: given a sparse matrix of users × items × ratings, decompose it into two smaller matrices — user embeddings and item embeddings — such that their product approximates known ratings; the same embeddings can then predict ratings for items a user hasn't interacted with yet, and dot-product similarity between embeddings finds "similar" users or items.</p><p>Modern production systems are typically <strong>hybrid</strong> and deep-learning-based: a two-stage pipeline first uses a lightweight model to retrieve a few hundred plausible candidates from millions of items (candidate generation), then a more expensive, more accurate deep model reranks that shortlist using dozens or hundreds of features — recency, session context, predicted watch-time — a balance between speed and precision that pure matrix factorization alone can't achieve at scale.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">USER HISTORY</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">watched, clicked,</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">purchased items</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">CANDIDATE GEN</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">retrieve ~500</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">plausible items, fast</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RERANK</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">deep model scores</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">each candidate</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TOP RESULTS</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">shown to the user</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Production recommenders narrow millions of items down to a shortlist cheaply, then spend more computation ranking just that shortlist precisely.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Matrix factorization, simplified</span>
+        <p>If a user's learned embedding is <code>[0.8, -0.2, 0.5]</code> (representing latent preferences like "likes thrillers," "dislikes slow pacing," "likes strong female leads") and a movie's embedding is <code>[0.7, -0.4, 0.6]</code>, the dot product <code>(0.8×0.7) + (-0.2×-0.4) + (0.5×0.6) = 0.56 + 0.08 + 0.3 = 0.94</code> predicts a high rating — even though no one hand-labeled the movie as "a thriller" for this system; the dimensions emerged purely from patterns in rating data.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>This is the technology behind Netflix's "Because you watched...", Amazon's "customers also bought," Spotify's Discover Weekly, and the feed-ranking algorithms behind most social media platforms — arguably some of the most economically significant deployed ML systems in existence, given how directly they drive engagement and revenue.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Recommendation systems just find what's objectively "best" for you.</strong> Most production systems are optimized for engagement or predicted revenue, not necessarily long-term user wellbeing — an important and actively debated distinction in how these systems are designed and evaluated.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Collaborative filtering requires understanding content.</strong> It works purely from behavioral patterns — it can recommend a foreign film with zero metadata as long as enough similar users liked it, no content understanding required.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> the "cold start" problem — recommending well when there's little or no history for a new user or item — is a defining challenge of the field, and is exactly why most production systems blend collaborative and content-based signals rather than relying on either alone.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="gpus-tpus-parallelism.html"><span class="ns-eyebrow">Infrastructure</span>GPUs, TPUs & Parallel Training</a>
+        <a href="vector-databases-mlops.html"><span class="ns-eyebrow">Infrastructure</span>Vector Databases & MLOps</a>
+        <a href="bias-fairness.html"><span class="ns-eyebrow">Ethics</span>Bias & Fairness</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computer Vision & Speech — AI, Explained</title>
+<meta name="description" content="How AI systems process images and audio in production — from object detection to speech recognition — and where these systems are actually deployed.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Applied AI & Infrastructure</h4>
+    <ul>
+      <li><a href="computer-vision-speech.html" class="current">Computer vision & speech</a></li>
+      <li><a href="recommendation-systems.html">Recommendation systems</a></li>
+      <li><a href="gpus-tpus-parallelism.html">GPUs, TPUs & parallel training</a></li>
+      <li><a href="vector-databases-mlops.html">Vector databases & MLOps</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="multimodal-models.html">Multimodal Models</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="recommendation-systems.html">Recommendation Systems</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Applied AI &middot; Concept 01</span>
+    <h1>Computer Vision & Speech</h1>
+    <p class="dek">Two of the earliest and most mature applied AI fields, both built on the same core idea: converting a raw physical signal — light or sound — into something a neural network can reason about.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Computer vision</strong> covers tasks like classifying what's in an image, detecting and locating multiple objects within it, and segmenting an image pixel-by-pixel into different regions — built primarily on CNNs and, increasingly, vision Transformers.</p><p><strong>Speech AI</strong> covers converting spoken audio into text (<strong>speech recognition</strong>) and converting text into natural-sounding spoken audio (<strong>text-to-speech</strong>), both of which first convert the raw audio waveform into a spectrogram — a visual representation of sound over time — that a neural network can process similarly to an image.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Object detection models (like the YOLO family) predict both a class label and a bounding box for every object in an image in a single pass, trading some accuracy for real-time speed; more accurate two-stage detectors first propose candidate regions, then classify each one. <strong>Semantic segmentation</strong> assigns a class label to every individual pixel, useful where exact boundaries matter, like in medical imaging or autonomous driving.</p><p>Modern speech recognition systems typically convert raw audio into a <strong>spectrogram</strong> via a Fourier transform, then process it with a neural network (often Transformer-based, like Whisper) trained to output the corresponding text transcript — effectively treating speech recognition as a sequence-to-sequence translation problem, from audio-token sequences to text-token sequences.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RAW SIGNAL</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">image pixels or</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">audio waveform</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">ENCODE</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">CNN/ViT for image,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">spectrogram for audio</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MODEL</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">detect, classify,</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">or transcribe</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">OUTPUT</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">labels, boxes,</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">or text</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Both vision and speech systems follow the same broad shape: convert a raw physical signal into a structured representation, then let a trained model extract meaning from it.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">An object detector's raw output</span>
+        <p>Feeding a street photo through an object detector might return: <code>{class: "car", confidence: 0.94, box: [120,80,340,210]}</code>, <code>{class: "pedestrian", confidence: 0.88, box: [400,60,460,300]}</code> — a list of every object found, each with a confidence score and a bounding box in pixel coordinates, which downstream systems (like a self-driving car's planning module) then use to make decisions.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>This category covers an enormous swath of deployed AI: photo organization and search, retail self-checkout, manufacturing quality inspection, medical imaging diagnosis, autonomous vehicle perception, voice assistants, real-time captioning, and call-center transcription and analysis — largely mature, well-understood technology compared to the faster-moving frontier of generative AI.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Modern computer vision systems are essentially solved and error-free.</strong> They remain sensitive to lighting, occlusion, unusual angles, and distribution shift from training data — a detector trained mostly on daytime photos can degrade significantly at night.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Speech recognition just needs to match sounds to words.</strong> Accurate transcription also depends heavily on language modeling to resolve ambiguity — "recognize speech" and "wreck a nice beach" sound nearly identical, and context is what disambiguates them.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> these systems are highly capable in-distribution — on data similar to what they were trained on — but performance can degrade sharply outside that distribution, which is why real deployments need continuous monitoring, not just a one-time accuracy benchmark.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="recommendation-systems.html"><span class="ns-eyebrow">Applied AI</span>Recommendation Systems</a>
+        <a href="gpus-tpus-parallelism.html"><span class="ns-eyebrow">Applied AI</span>GPUs, TPUs & Parallel Training</a>
+        <a href="bias-fairness.html"><span class="ns-eyebrow">Ethics</span>Bias & Fairness</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

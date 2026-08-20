@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GANs & VAEs — AI, Explained</title>
+<meta name="description" content="Two earlier approaches to generative AI: Generative Adversarial Networks, which pit two models against each other, and Variational Autoencoders.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Generative AI</h4>
+    <ul>
+      <li><a href="diffusion-models.html">Diffusion models, step by step</a></li>
+      <li><a href="gans-vaes.html" class="current">GANs & VAEs</a></li>
+      <li><a href="multimodal-models.html">Multimodal models</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="diffusion-models.html">Diffusion Models, Step by Step</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="multimodal-models.html">Multimodal Models</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Generative AI &middot; Concept 02</span>
+    <h1>GANs & VAEs</h1>
+    <p class="dek">Before diffusion models took over, these two architectures defined the field of AI-generated content — and the core ideas behind both still show up throughout modern generative systems.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>GAN (Generative Adversarial Network)</strong> trains two neural networks against each other: a <strong>generator</strong> that tries to create convincing fake images, and a <strong>discriminator</strong> that tries to tell real images from the generator's fakes. Each gets better by trying to outdo the other, like a forger and an art authenticator locked in an escalating rivalry.</p><p>A <strong>VAE (Variational Autoencoder)</strong> takes a different approach: it learns to compress data into a compact representation and then reconstruct it, and by structuring that compressed space carefully, you can sample new points from it to generate entirely new, plausible outputs.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>The GAN generator maps random noise to a synthetic sample; the discriminator outputs a probability that a given sample is real. Training alternates: the discriminator is updated to better distinguish real from fake, then the generator is updated to better fool the current discriminator — formally a <strong>minimax game</strong> that, at convergence, ideally produces a generator whose outputs are indistinguishable from real data.</p><p>A VAE consists of an <strong>encoder</strong> that maps input data to a probability distribution over a compact <strong>latent space</strong>, and a <strong>decoder</strong> that reconstructs data from a sampled point in that space. It's trained to minimize both reconstruction error and a regularization term that keeps the latent space smooth and well-structured (via the KL divergence to a standard normal distribution) — that structure is what makes sampling new, coherent outputs possible.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">GAN: Generator</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">noise → fake image</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">GAN: Discriminator</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">real or fake?</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ feedback</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">VAE: Encoder</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">image → compact</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">latent representation</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">VAE: Decoder</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">latent point →</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">reconstructed image</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">GANs pit two networks against each other in competition; VAEs compress and reconstruct through a structured latent space — different mechanisms, both aimed at generating new data.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Why GAN training is notoriously tricky</span>
+        <p>If the discriminator becomes too good too fast, it can distinguish real from fake with near-perfect confidence, giving the generator almost no useful gradient signal to improve from — like being told "wrong" with no hint of how wrong. This is <strong>mode collapse</strong>'s cousin problem, and why GAN training historically required careful balancing between the two networks' learning rates and architectures, unlike diffusion models' comparatively more stable single-network training.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>GANs were behind early deepfakes, StyleGAN's photorealistic face generation, and many image super-resolution and style-transfer tools. VAEs are used for anomaly detection (data that reconstructs poorly is likely unusual), and their latent-space concept is directly reused inside modern diffusion models — most text-to-image diffusion actually runs the noising/denoising process in a VAE's compressed latent space rather than on raw pixels, for efficiency.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>GANs and VAEs are now completely obsolete.</strong> Diffusion models dominate headline image generation, but GANs remain competitive for fast, real-time generation, and VAE-style latent spaces are a core component inside most modern diffusion pipelines.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>The discriminator in a GAN is used at generation time.</strong> Once training finishes, only the generator is used to produce new images — the discriminator's entire job was to make the generator better during training.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> these two architectures represent two different generative philosophies — adversarial competition (GANs) versus structured compression (VAEs) — and modern systems often borrow ideas from both alongside diffusion.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="multimodal-models.html"><span class="ns-eyebrow">Generative AI</span>Multimodal Models</a>
+        <a href="computer-vision-speech.html"><span class="ns-eyebrow">Applied AI</span>Computer Vision & Speech</a>
+        <a href="bias-fairness.html"><span class="ns-eyebrow">Ethics</span>Bias & Fairness</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

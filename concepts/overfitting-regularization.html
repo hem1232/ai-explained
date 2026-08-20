@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Overfitting & Regularization — AI, Explained</title>
+<meta name="description" content="Why models that perform perfectly on training data often fail in the real world, and the techniques used to prevent it.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Core Machine Learning</h4>
+    <ul>
+      <li><a href="regression.html">Linear & logistic regression</a></li>
+      <li><a href="decision-trees.html">Decision trees & random forests</a></li>
+      <li><a href="overfitting-regularization.html" class="current">Overfitting & regularization</a></li>
+      <li><a href="evaluation-metrics.html">Evaluation: precision, recall, F1, ROC</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="decision-trees.html">Decision Trees & Random Forests</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="evaluation-metrics.html">Evaluation: Precision, Recall, F1, ROC</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Core Machine Learning &middot; Concept 03</span>
+    <h1>Overfitting & Regularization</h1>
+    <p class="dek">The single most common way ML projects fail isn't a bad algorithm — it's a model that memorized its homework instead of learning the subject.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Overfitting</strong> happens when a model learns the training data too well — including its noise and quirks — so it performs beautifully on data it's already seen but poorly on new data.</p><p><strong>Regularization</strong> is a family of techniques that deliberately discourage a model from fitting the training data too perfectly, trading a bit of training accuracy for much better real-world performance.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Overfitting corresponds to low <strong>bias</strong> but high <strong>variance</strong> — the model's predictions vary wildly depending on which specific training set it saw. The opposite failure, <strong>underfitting</strong>, is high bias: the model is too simple to capture the real pattern at all. The goal is the sweet spot in the <strong>bias-variance tradeoff</strong>.</p><p>Common regularization techniques: <strong>L1/L2 regularization</strong> adds a penalty term to the loss function proportional to the size of the model's weights, discouraging overly large, finely-tuned coefficients. <strong>Dropout</strong> (in neural networks) randomly disables neurons during training so the network can't over-rely on any single path. <strong>Early stopping</strong> halts training once performance on a held-out validation set stops improving, even if training accuracy is still climbing.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 612 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">UNDERFIT</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">too simple</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">misses real pattern</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">GOOD FIT</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">captures pattern,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">ignores noise</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">OVERFIT</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">memorizes noise</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">fails on new data</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">As model complexity increases, training accuracy keeps climbing — but real-world accuracy peaks and then falls. Regularization aims to stop at the peak.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Spotting overfitting from the numbers</span>
+        <p>A model reaches 99.8% accuracy on its training set but only 71% on its validation set. That 28-point gap is the signature of overfitting — the model has essentially memorized answers rather than learning generalizable patterns. Adding L2 regularization or reducing tree depth might bring training accuracy down to 91% but push validation accuracy up to 88%, a model that's genuinely more useful despite "performing worse" on paper.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Every serious ML pipeline includes a held-out validation set specifically to catch this — it's why you'll see terms like "validation loss" tracked separately from "training loss" in any real training run, and why a model's reported training accuracy alone tells you almost nothing about how it'll perform in production.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Higher training accuracy means a better model.</strong> Past a certain point, higher training accuracy is a red flag for overfitting, not a sign of quality.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Regularization is only needed for complex models like deep neural networks.</strong> Even simple linear regression overfits with too many features relative to data points — regularization applies across nearly all of ML.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> always judge a model by its performance on data it hasn't seen — training performance is a diagnostic tool, not a scoreboard.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="evaluation-metrics.html"><span class="ns-eyebrow">Core ML</span>Evaluation Metrics</a>
+        <a href="neural-networks.html"><span class="ns-eyebrow">Deep Learning</span>How Neural Networks Learn</a>
+        <a href="backpropagation.html"><span class="ns-eyebrow">Deep Learning</span>Backpropagation</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

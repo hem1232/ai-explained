@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interpretability — AI, Explained</title>
+<meta name="description" content="Why it's so hard to know exactly why a neural network made a specific decision, and the growing field working on making AI systems understandable.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Ethics, Safety & the Frontier</h4>
+    <ul>
+      <li><a href="bias-fairness.html">Bias & fairness</a></li>
+      <li><a href="interpretability.html" class="current">Interpretability</a></li>
+      <li><a href="scaling-laws.html">Scaling laws</a></li>
+      <li><a href="agi-debate.html">The AGI debate</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="bias-fairness.html">Bias & Fairness</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="scaling-laws.html">Scaling Laws</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Ethics, Safety & the Frontier &middot; Concept 02</span>
+    <h1>Interpretability</h1>
+    <p class="dek">A model with billions of parameters produces an answer — but not an explanation. Interpretability is the field trying to open that box, for reasons ranging from debugging to safety to regulatory compliance.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>Most powerful modern models are effectively "black boxes": you can see the input and the output, but the millions or billions of internal numbers that produced that output don't have an obvious, human-readable meaning attached to them.</p><p><strong>Interpretability</strong> research tries to change that — to find ways of understanding, even approximately, why a model made a specific decision, what concepts it's internally representing, and whether it's reasoning the way you'd want it to.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Techniques fall broadly into two camps. <strong>Post-hoc explanation</strong> methods (like LIME or SHAP) don't open the model itself, but instead approximate its local behavior around a specific prediction — for example, by perturbing the input slightly and observing how the output changes, to estimate which features mattered most for that one decision.</p><p><strong>Mechanistic interpretability</strong> aims deeper: reverse-engineering what individual neurons, attention heads, or groups of them are actually computing, to find human-understandable structure inside the model's weights directly — for instance, identifying a specific attention head that reliably tracks grammatical subject-verb agreement, or a direction in activation space that seems to represent a specific concept.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MODEL DECISION</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"deny this loan"</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">POST-HOC METHOD</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">perturb inputs,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">see what changes output</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MECHANISTIC METHOD</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">inspect internal</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">neurons/attention directly</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">EXPLANATION</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">which factors</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">actually drove this</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Two different strategies for the same goal: explain a black box from the outside by testing it, or open it up and try to read its internal computation directly.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">A SHAP explanation, simplified</span>
+        <p>For a loan denial, a post-hoc method might output feature contributions like: <code>debt_ratio: −0.31 (hurt approval odds)</code>, <code>income: +0.12 (helped)</code>, <code>credit_history_length: −0.08 (hurt)</code>. This tells a loan officer (and, in regulated contexts, the applicant) which specific factors most influenced this specific decision — without needing to understand the model's full internal structure, just its local behavior around this one case.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Interpretability matters for debugging models (finding out a model is relying on a spurious pattern, like a watermark rather than actual image content), regulatory compliance (many jurisdictions require an explanation for automated decisions like loan denials), and increasingly, AI safety — understanding whether a powerful model's internal reasoning matches its stated reasoning is an active, high-priority area of alignment research at major AI labs.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Interpretability tools give a complete, ground-truth explanation of a model's decision.</strong> Most current methods are approximations, and can sometimes give misleading or unstable explanations that don't fully capture the model's actual computation.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>If a model can explain its reasoning in words, that explanation is accurate.</strong> A model's stated, natural-language explanation for its own output isn't necessarily what actually drove that output internally — this gap between stated and actual reasoning is a specific, active area of interpretability research.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> interpretability is an actively evolving field, not a solved problem — current tools provide genuinely useful partial insight, not a complete window into a model's "mind."</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="scaling-laws.html"><span class="ns-eyebrow">Ethics</span>Scaling Laws</a>
+        <a href="agi-debate.html"><span class="ns-eyebrow">Ethics</span>The AGI Debate</a>
+        <a href="pretraining-finetuning-rlhf.html"><span class="ns-eyebrow">NLP</span>Pretraining, Fine-tuning & RLHF</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tokenization & Embeddings — AI, Explained</title>
+<meta name="description" content="How language models convert raw text into numbers — tokenization splits text into pieces, and embeddings turn those pieces into meaningful vectors.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>NLP & Language Models</h4>
+    <ul>
+      <li><a href="tokenization-embeddings.html" class="current">Tokenization & embeddings</a></li>
+      <li><a href="attention.html">Attention, intuitively</a></li>
+      <li><a href="transformers.html">The Transformer Architecture</a></li>
+      <li><a href="pretraining-finetuning-rlhf.html">Pretraining, fine-tuning & RLHF</a></li>
+      <li><a href="rag-agents.html">RAG & AI agents</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="rnns-lstms.html">RNNs & LSTMs</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="attention.html">Attention, Intuitively</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">NLP & Language Models &middot; Concept 01</span>
+    <h1>Tokenization & Embeddings</h1>
+    <p class="dek">Neural networks only understand numbers. Before a model can do anything with language, every word has to be converted into a list of numbers that somehow captures what it means.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Tokenization</strong> is the process of splitting text into smaller pieces — usually not whole words, but common sub-word chunks — so the model has a manageable, fixed vocabulary to work with, even for words it's never seen before.</p><p>An <strong>embedding</strong> is a learned list of numbers (a vector) assigned to each token, positioned in a high-dimensional space such that similar meanings end up near each other — "king" and "queen" land close together, while "king" and "bicycle" land far apart.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Most modern models use <strong>subword tokenization</strong> algorithms like Byte-Pair Encoding (BPE) or SentencePiece, which build a vocabulary of common character sequences by iteratively merging the most frequent adjacent pairs in a training corpus — this lets rare or unseen words be represented as a combination of familiar pieces ("unbelievably" → "un" + "believ" + "ably") rather than failing outright.</p><p>Each token ID indexes into an <strong>embedding matrix</strong> — a learned table of vectors, typically hundreds to thousands of dimensions wide — that's trained jointly with the rest of the model. The geometric relationships between these vectors end up encoding meaning: a famous example is that the vector arithmetic <code>king − man + woman</code> lands close to the vector for <code>queen</code>.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RAW TEXT</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"unbelievable"</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TOKENIZE</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"un" "believ" "able"</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TOKEN IDs</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">482, 9931, 217</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">EMBEDDINGS</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">each ID → a vector</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">of ~1000+ numbers</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Text is split into sub-word tokens, each token maps to an ID, and each ID looks up a learned vector that encodes meaning.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Vector arithmetic on meaning</span>
+        <p>Real embedding vectors have hundreds of dimensions, but a simplified 2D version illustrates the idea: if <code>king = [0.9, 0.2]</code>, <code>man = [0.8, -0.1]</code>, and <code>woman = [0.3, -0.1]</code>, then <code>king − man + woman = [0.4, 0.2]</code> — a point that lands close to the learned vector for <code>queen</code>, purely because the model, during training, arranged its embedding space so that the "royalty" direction and the "gender" direction became roughly separable dimensions.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Embeddings extend far beyond individual model internals — they're the backbone of semantic search, recommendation systems, and RAG systems (which retrieve relevant text by comparing embedding similarity rather than exact keyword matches). This is why a search for "puppy training tips" can return a result titled "how to raise a well-behaved dog" with no words in common at all.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Tokenization always splits on whole words.</strong> Subword tokenization deliberately breaks rare or long words into pieces — which is also why LLMs sometimes struggle with character-level tasks like counting letters in a word, since they don't see individual letters directly.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Embeddings are hand-designed by engineers.</strong> They're learned automatically during training, purely from patterns of which words tend to appear in similar contexts — no one manually decides that "king" and "queen" should be close together.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> tokenization and embeddings are the translation layer between human language and the math a neural network can actually operate on — everything downstream depends on this translation being good.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="attention.html"><span class="ns-eyebrow">NLP</span>Attention, Intuitively</a>
+        <a href="transformers.html"><span class="ns-eyebrow">NLP</span>The Transformer Architecture</a>
+        <a href="vector-databases-mlops.html"><span class="ns-eyebrow">Applied AI</span>Vector Databases & MLOps</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

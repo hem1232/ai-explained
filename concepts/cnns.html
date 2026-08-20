@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CNNs for Images — AI, Explained</title>
+<meta name="description" content="How Convolutional Neural Networks process images — filters, feature maps, and pooling — explained with a worked example.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Neural Networks & Deep Learning</h4>
+    <ul>
+      <li><a href="neural-networks.html">How Neural Networks Learn</a></li>
+      <li><a href="backpropagation.html">Backpropagation, step by step</a></li>
+      <li><a href="cnns.html" class="current">CNNs for images</a></li>
+      <li><a href="rnns-lstms.html">RNNs & LSTMs for sequences</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="backpropagation.html">Backpropagation, Step by Step</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="rnns-lstms.html">RNNs & LSTMs</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Deep Learning &middot; Concept 03</span>
+    <h1>CNNs for Images</h1>
+    <p class="dek">A regular neural network looking at a photo pixel-by-pixel would need an enormous number of weights and would learn nothing about shapes. CNNs fix this by learning small, reusable pattern-detectors.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>Convolutional Neural Network</strong> scans an image with small sliding filters, each one learning to detect a simple visual pattern — an edge, a curve, a patch of color — and then combines those simple detections into progressively more complex ones: edges become shapes, shapes become object parts, object parts become whole objects.</p><p>The key insight is <strong>weight sharing</strong>: the same small filter is reused across the entire image, rather than learning a completely separate weight for every pixel position — this is both far more efficient and matches a real property of images, that a useful pattern (like an edge) can appear anywhere in the frame.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>A <strong>convolution</strong> slides a small filter (e.g. 3×3 pixels) across the input, computing a dot product at each position to produce a <strong>feature map</strong> highlighting where that pattern appears. Multiple filters per layer each learn to detect a different feature.</p><p><strong>Pooling</strong> layers (commonly max pooling) downsample feature maps, reducing spatial size while keeping the strongest signals, which makes the network more robust to small shifts in where a feature appears. Stacking several convolution + pooling blocks builds a hierarchy: early layers detect edges and textures, deeper layers detect object parts and eventually whole objects, feeding into a final classification layer.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">IMAGE</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">raw pixel grid</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">CONV LAYER 1</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">detects edges,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">simple textures</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">POOL + CONV 2</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">detects shapes,</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">object parts</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">CLASSIFY</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ "cat", 94%</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">confidence</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Each layer builds on the last: raw pixels → edges → shapes → object parts → a final label — a hierarchy of increasingly abstract features.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">What one filter actually detects</span>
+        <p>A simple 3×3 vertical-edge filter might look like:</p><p><code>[-1, 0, 1] / [-1, 0, 1] / [-1, 0, 1]</code></p><p>Slid across a region of the image where pixel brightness jumps sharply left-to-right (a vertical edge), this filter produces a large output value — that position "lights up" in the resulting feature map. Slid across a flat, uniform region, it produces close to zero. Training doesn't hand-design this filter — it emerges from backpropagation because detecting edges turns out to reduce classification error.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>CNNs power most of computer vision in production: photo tagging and search, medical imaging diagnosis, self-driving car perception systems, and manufacturing defect detection. Vision Transformers have started to compete with CNNs on large datasets, but CNNs remain dominant where data or compute is limited, thanks to their built-in assumption that nearby pixels are related.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>CNNs "see" images the way humans do.</strong> They detect statistical patterns useful for the training objective, which sometimes overlaps with human-perceived features and sometimes doesn't — this is why CNNs can be fooled by adversarial perturbations invisible to humans.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Bigger filters always capture more detail.</strong> Larger filters have more parameters and can actually miss fine, local detail that small filters stacked in sequence capture more efficiently — this is why most modern CNNs favor small (3×3) filters stacked deep.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> CNNs work well specifically because images have spatial structure — nearby pixels are related — which is an assumption baked directly into the architecture, not learned from scratch.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="rnns-lstms.html"><span class="ns-eyebrow">Deep Learning</span>RNNs & LSTMs</a>
+        <a href="computer-vision-speech.html"><span class="ns-eyebrow">Applied AI</span>Computer Vision & Speech</a>
+        <a href="attention.html"><span class="ns-eyebrow">NLP</span>Attention, Intuitively</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

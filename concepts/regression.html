@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Linear & Logistic Regression — AI, Explained</title>
+<meta name="description" content="The two foundational supervised learning algorithms — predicting a number with linear regression and a probability with logistic regression.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Core Machine Learning</h4>
+    <ul>
+      <li><a href="regression.html" class="current">Linear & logistic regression</a></li>
+      <li><a href="decision-trees.html">Decision trees & random forests</a></li>
+      <li><a href="overfitting-regularization.html">Overfitting & regularization</a></li>
+      <li><a href="evaluation-metrics.html">Evaluation: precision, recall, F1, ROC</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="data-features-labels.html">Data, Features & Labels</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="decision-trees.html">Decision Trees & Random Forests</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Core Machine Learning &middot; Concept 01</span>
+    <h1>Linear & Logistic Regression</h1>
+    <p class="dek">The simplest useful models in all of ML, and still some of the most widely deployed — because a straight line, drawn well, gets you further than you'd expect.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Linear regression</strong> predicts a number by fitting the straight line (or flat plane, in higher dimensions) that best matches the training data — like drawing the best-fit line through a scatterplot of house size vs. price.</p><p><strong>Logistic regression</strong>, despite the name, predicts a category (usually yes/no) by fitting a curve that outputs a probability between 0 and 1 — "how likely is this email to be spam?" rather than a raw number.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Linear regression models the relationship as <code>y = w1x1 + w2x2 + ... + b</code>, and finds the weights that minimize the <strong>mean squared error</strong> between predictions and true values, typically via an exact formula or gradient descent.</p><p>Logistic regression applies the same weighted sum, then passes it through the <strong>sigmoid function</strong> to squash the result into a 0–1 probability, and is trained by minimizing <strong>log loss</strong> (also called cross-entropy) rather than squared error, since it's optimizing for correct probabilities rather than closeness of a number.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FEATURES</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">x1, x2, x3 ...</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">WEIGHTED SUM</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">w1x1+w2x2+...+b</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">LINEAR: raw value</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">e.g. predicted price</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">LOGISTIC: sigmoid</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ probability 0–1</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Both algorithms compute the same weighted sum — they differ only in what happens to that sum at the end.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Predicting loan default risk</span>
+        <p>A bank models default risk with logistic regression: <code>z = 0.02×(debt_ratio) − 0.01×(income_thousands) + 0.3</code>. For an applicant with debt ratio 40 and income $60k: <code>z = 0.02×40 − 0.01×60 + 0.3 = 0.8 − 0.6 + 0.3 = 0.5</code>. Then <code>sigmoid(0.5) ≈ 0.62</code> — a 62% estimated probability of default, which the bank can compare against a threshold to approve or deny the loan.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Logistic regression remains extremely common in credit scoring, medical risk prediction, and click-through-rate modeling — industries where regulators require the model's decisions to be explainable, since each weight has a clear, interpretable meaning. Linear regression underlies demand forecasting, pricing models, and countless "predict a number" business problems.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Logistic regression is a type of regression that predicts numbers, like linear regression.</strong> It's actually a classification algorithm — the "regression" in the name refers to how it's fit, not what it outputs.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>These are outdated compared to deep learning.</strong> On small-to-medium structured/tabular data, regression models often match or beat neural networks, train in seconds, and are far easier to explain to regulators.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> these are the right first model to try for most structured-data problems — reach for something more complex only once you've confirmed regression genuinely isn't enough.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="decision-trees.html"><span class="ns-eyebrow">Core ML</span>Decision Trees & Random Forests</a>
+        <a href="overfitting-regularization.html"><span class="ns-eyebrow">Core ML</span>Overfitting & Regularization</a>
+        <a href="neural-networks.html"><span class="ns-eyebrow">Deep Learning</span>How Neural Networks Learn</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

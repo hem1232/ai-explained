@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RAG & AI Agents — AI, Explained</title>
+<meta name="description" content="How Retrieval-Augmented Generation gives language models access to current, private information, and how AI agents chain reasoning and tool use together.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>NLP & Language Models</h4>
+    <ul>
+      <li><a href="tokenization-embeddings.html">Tokenization & embeddings</a></li>
+      <li><a href="attention.html">Attention, intuitively</a></li>
+      <li><a href="transformers.html">The Transformer Architecture</a></li>
+      <li><a href="pretraining-finetuning-rlhf.html">Pretraining, fine-tuning & RLHF</a></li>
+      <li><a href="rag-agents.html" class="current">RAG & AI agents</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="pretraining-finetuning-rlhf.html">Pretraining, Fine-tuning & RLHF</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="vector-databases-mlops.html">Vector Databases & MLOps</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">NLP & Language Models &middot; Concept 05</span>
+    <h1>RAG & AI Agents</h1>
+    <p class="dek">A language model's knowledge is frozen at training time and limited to what was in its training data. RAG and agents are the two dominant ways of working around that limitation.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>RAG (Retrieval-Augmented Generation)</strong> gives a model access to outside information at the moment you ask a question: it searches a document collection for relevant passages, then hands those passages to the model along with your question, so it can answer using current or private information it was never trained on.</p><p>An <strong>AI agent</strong> goes a step further — instead of answering in one shot, it can plan a sequence of steps, use tools (search the web, run code, query a database), observe the results, and decide what to do next, looping until the task is actually done.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>RAG systems convert documents into embeddings and store them in a <strong>vector database</strong>. At query time, the user's question is also embedded, and the system retrieves the nearest-neighbor document chunks by vector similarity, injecting them into the model's context window alongside the original question — grounding the model's answer in retrieved text rather than relying purely on parametric memory from training.</p><p>Agent frameworks typically implement a loop — often described as <strong>ReAct</strong> (Reason + Act): the model generates a thought, chooses an action (like calling a specific tool with specific arguments), receives an observation (the tool's output), and repeats, incorporating each observation into its next reasoning step, until it determines the task is complete or a stopping condition is hit.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">USER QUERY</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"what changed in</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">our Q3 report?"</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RETRIEVE</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">search vector DB</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">for relevant chunks</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">AUGMENT PROMPT</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">inject retrieved</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">text as context</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">GENERATE</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">answer grounded</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">in real documents</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">RAG's core loop: turn the question into a search, find relevant real documents, and generate an answer grounded in them — rather than relying solely on what the model memorized during training.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">An agent chaining tool calls</span>
+        <p>Task: "What's the weather in the city where our biggest customer is headquartered?" An agent might reason: <em>(1)</em> I need to find the biggest customer → calls a database-query tool → gets "Acme Corp, headquartered in Austin." <em>(2)</em> Now I need Austin's weather → calls a weather-API tool → gets "78°F, clear." <em>(3)</em> I have enough information → responds to the user with the final answer. No single tool could answer this alone; the agent had to chain two tool calls together based on the result of the first.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>RAG is behind most "chat with your documents" products and enterprise AI assistants that need to cite internal company data, since it lets an off-the-shelf model answer accurately about information it never saw during training. Agents power coding assistants that can run and test code, research assistants that browse the web, and increasingly, multi-step business-process automation.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>RAG updates the model's actual knowledge, like fine-tuning would.</strong> RAG doesn't change the model's weights at all — it just supplies extra text as context at query time; the underlying model is unchanged.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Agents can reliably handle any multi-step task without supervision.</strong> Agents can compound errors across steps, and a wrong tool call or misread observation early in a chain can derail everything that follows — reliable agent systems need careful guardrails, not just a capable underlying model.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> RAG solves "the model doesn't know this fact"; agents solve "this task needs more than one step and real-world actions" — related but different problems, often combined in the same system.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="vector-databases-mlops.html"><span class="ns-eyebrow">Applied AI</span>Vector Databases & MLOps</a>
+        <a href="diffusion-models.html"><span class="ns-eyebrow">Generative AI</span>Diffusion Models</a>
+        <a href="agi-debate.html"><span class="ns-eyebrow">Ethics</span>The AGI Debate</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

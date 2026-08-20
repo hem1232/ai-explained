@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What is AI, ML & Deep Learning? — AI, Explained</title>
+<meta name="description" content="A plain-English and technical explanation of artificial intelligence, machine learning, and deep learning — how they relate, with a diagram and worked example.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Foundations</h4>
+    <ul>
+      <li><a href="what-is-ai.html" class="current">What is AI, ML &amp; DL?</a></li>
+      <li><a href="supervised-vs-unsupervised.html">Supervised vs. unsupervised</a></li>
+      <li><a href="training-vs-inference.html">Training vs. inference</a></li>
+      <li><a href="data-features-labels.html">Data, features &amp; labels</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      None — this is the starting point.
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="neural-networks.html">How Neural Networks Learn</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Foundations · Concept 01</span>
+    <h1>What is AI, Machine Learning, and Deep Learning?</h1>
+    <p class="dek">Three words people use interchangeably that actually describe three nested things. Getting this straight makes almost everything else in AI click into place.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Artificial intelligence</strong> is the broad goal: getting a computer to do something that normally requires human judgment — recognizing a face, translating a sentence, recommending a song.</p>
+      <p><strong>Machine learning</strong> is the dominant way we build AI today: instead of writing explicit rules ("if the pixel pattern looks like this, it's a cat"), you show the computer thousands of examples and let it work out the rules itself.</p>
+      <p><strong>Deep learning</strong> is a specific technique within machine learning that uses layered networks of simple math functions — loosely inspired by neurons — to learn from very large amounts of data. It's the technique behind almost every headline-making AI system since 2015.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>AI is a field, not a single method — it includes search algorithms, rule-based expert systems, planning, and learning-based approaches. Machine learning is the subfield concerned with algorithms that improve their performance on a task by processing data, without being explicitly reprogrammed for each new case. Formally, a model learns a function <code>f(x) → y</code> that maps inputs <code>x</code> to outputs <code>y</code>, by adjusting internal parameters to minimize error on example data.</p>
+      <p>Deep learning restricts that function to a specific shape: a stack of layers, each applying a linear transformation followed by a non-linear activation, trained via an algorithm called backpropagation (covered in the next concept).</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> How they nest</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg">
+          <rect x="20" y="20" width="680" height="280" rx="16" fill="none" stroke="#3557FF" stroke-width="2"/>
+          <text x="44" y="52" font-family="IBM Plex Mono" font-size="14" fill="#3557FF">ARTIFICIAL INTELLIGENCE</text>
+          <text x="44" y="72" font-family="Inter" font-size="12" fill="#4A5164">any technique that makes machines act intelligently</text>
+
+          <rect x="70" y="96" width="580" height="180" rx="14" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+          <text x="94" y="126" font-family="IBM Plex Mono" font-size="13" fill="#12151C">MACHINE LEARNING</text>
+          <text x="94" y="146" font-family="Inter" font-size="12" fill="#4A5164">systems that learn patterns from data instead of fixed rules</text>
+
+          <rect x="150" y="168" width="420" height="86" rx="12" fill="#1F8A70" opacity="0.12" stroke="#1F8A70" stroke-width="1.5"/>
+          <text x="174" y="196" font-family="IBM Plex Mono" font-size="13" fill="#12151C">DEEP LEARNING</text>
+          <text x="174" y="216" font-family="Inter" font-size="12" fill="#4A5164">layered neural networks, learning from huge datasets</text>
+          <text x="174" y="236" font-family="Inter" font-size="12" fill="#4A5164">— GPT, image generators, speech recognition</text>
+        </svg>
+        <p class="diagram-caption">Deep learning is inside machine learning, which is inside AI. Every deep learning system is ML; not every ML system is deep learning; not all AI is ML at all (a chess engine's search algorithm is AI but not learning-based).</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Spam filtering, three ways</span>
+        <p><strong>Rule-based AI (not ML):</strong> a programmer writes "if the email contains 'FREE MONEY' in all caps, flag it as spam." This is AI — it automates a judgment call — but there's no learning involved.</p>
+        <p><strong>Classical ML:</strong> you feed the system 50,000 emails labeled spam/not-spam. It learns which word patterns statistically correlate with spam and builds its own rules — including ones a human might never think to write.</p>
+        <p><strong>Deep learning:</strong> instead of hand-picking which word patterns matter, a neural network reads the raw email text and learns to represent meaning itself, catching subtler signals — tone, phrasing, structure — that simple word-counting would miss.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Gmail's spam filter, Netflix's recommendations, and your bank's fraud detection are classical ML. ChatGPT, Midjourney, and Google Translate's newer versions are deep learning. Both count as "AI" — the term just tells you almost nothing about how the system actually works, which is why the more specific terms matter.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+      <div class="misconception"><span class="x">✕</span><p><strong>"AI" and "machine learning" are the same thing.</strong> AI is the goal; ML is one (very popular) approach to reaching it. A calculator isn't AI. A hand-coded chess engine is AI but not ML.</p></div>
+      <div class="misconception"><span class="x">✕</span><p><strong>Deep learning is "better" than classical ML.</strong> Deep learning needs far more data and compute. For small structured datasets, a simple decision tree often outperforms a neural network.</p></div>
+      <div class="misconception"><span class="check">✓</span><p><strong>Correct framing:</strong> pick the narrowest technique that solves your problem. Reach for deep learning specifically when the data is unstructured (images, audio, free text) and abundant.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="neural-networks.html"><span class="ns-eyebrow">Deep Learning · Live</span>How Neural Networks Learn</a>
+        <a href="supervised-vs-unsupervised.html"><span class="ns-eyebrow">Foundations</span>Supervised vs. unsupervised learning</a>
+        <a href="training-vs-inference.html"><span class="ns-eyebrow">Foundations</span>Training vs. inference</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

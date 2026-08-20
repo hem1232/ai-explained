@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Attention, Intuitively — AI, Explained</title>
+<meta name="description" content="The core idea behind self-attention in Transformers — how a model decides which words in a sentence matter to which other words.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>NLP & Language Models</h4>
+    <ul>
+      <li><a href="tokenization-embeddings.html">Tokenization & embeddings</a></li>
+      <li><a href="attention.html" class="current">Attention, intuitively</a></li>
+      <li><a href="transformers.html">The Transformer Architecture</a></li>
+      <li><a href="pretraining-finetuning-rlhf.html">Pretraining, fine-tuning & RLHF</a></li>
+      <li><a href="rag-agents.html">RAG & AI agents</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="tokenization-embeddings.html">Tokenization & Embeddings</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="transformers.html">The Transformer Architecture</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">NLP & Language Models &middot; Concept 02</span>
+    <h1>Attention, Intuitively</h1>
+    <p class="dek">One mechanism, more than any other single idea, is responsible for the current era of AI. Before diving into the full Transformer, it's worth sitting with attention on its own.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>Attention lets a model, when processing one word, decide how much to "look at" every other word in the sentence — rather than reading strictly left to right and hoping earlier context survives, it can directly pull in whatever's relevant, no matter how far away it is.</p><p>It's a bit like how you read a sentence with a confusing pronoun: you don't just remember the sentence in order — you actively glance back to figure out what "it" refers to. Attention gives the model that same ability, but for every word, automatically, and learned from data rather than programmed by hand.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>For each token, self-attention computes a <strong>Query</strong> vector (what this token is looking for), and every token (including itself) offers a <strong>Key</strong> vector (what it contains) and a <strong>Value</strong> vector (what it contributes if attended to). The attention score between two tokens is the dot product of one's Query and the other's Key, scaled and passed through a <strong>softmax</strong> to produce weights that sum to 1.</p><p>The token's new representation is a weighted sum of all Value vectors, using those attention weights — so a token that's highly relevant contributes strongly to the result, and an irrelevant one contributes almost nothing. Running several of these attention computations in parallel (<strong>multi-head attention</strong>) lets the model track several different kinds of relationships at once — one head might track grammatical subject-verb agreement, another might track topical relevance.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">QUERY</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"it" asks:</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">who am I about?</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">KEYS</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">every word offers</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">what it represents</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">SCORES</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">compare query</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">to every key</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">WEIGHTED BLEND</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">mix in Values,</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">weighted by score</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Every token asks a question (Query), every token offers an answer (Key), and the token's new meaning is a blend of Values weighted by how well each answer matched the question.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Attention weights, roughly</span>
+        <p>For the sentence "The animal didn't cross the street because it was too tired," attention weights for the word "it" (simplified, after softmax) might look like:</p><p><code>animal: 0.71  street: 0.09  tired: 0.14  (other tokens): 0.06</code></p><p>"Animal" dominates — the model has learned that tiredness is a property far more associated with animals than streets, so "it" ends up representing mostly "animal" once these weights blend the Value vectors together.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Self-attention is the mechanism inside every Transformer, but the general idea — letting a model dynamically decide what's relevant rather than treating all input equally — has spread well beyond text, into vision Transformers, protein-folding models like AlphaFold, and multimodal systems that need to relate an image region to a specific word.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Attention only looks backward, at earlier words.</strong> In most Transformer encoders, attention is bidirectional — full self-attention looks both forward and backward. Only decoder models used for text generation restrict attention to prior tokens, so the model can't "cheat" by seeing the future word it's supposed to predict.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>One attention head sees everything a model needs.</strong> A single head captures one type of relationship; real models use many heads in parallel, each free to specialize in a different pattern, then combine the results.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> attention is a learned, content-based way of routing information between positions in a sequence — a much more flexible mechanism than the fixed, sequential routing an RNN uses.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="transformers.html"><span class="ns-eyebrow">NLP</span>The Transformer Architecture</a>
+        <a href="pretraining-finetuning-rlhf.html"><span class="ns-eyebrow">NLP</span>Pretraining, Fine-tuning & RLHF</a>
+        <a href="multimodal-models.html"><span class="ns-eyebrow">Generative AI</span>Multimodal Models</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

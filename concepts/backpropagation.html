@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backpropagation, Step by Step — AI, Explained</title>
+<meta name="description" content="How neural networks actually learn from their mistakes — the calculus behind backpropagation and gradient descent, explained without hand-waving.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Neural Networks & Deep Learning</h4>
+    <ul>
+      <li><a href="neural-networks.html">How Neural Networks Learn</a></li>
+      <li><a href="backpropagation.html" class="current">Backpropagation, step by step</a></li>
+      <li><a href="cnns.html">CNNs for images</a></li>
+      <li><a href="rnns-lstms.html">RNNs & LSTMs for sequences</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="neural-networks.html">How Neural Networks Learn</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="cnns.html">CNNs for Images</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Deep Learning &middot; Concept 02</span>
+    <h1>Backpropagation, Step by Step</h1>
+    <p class="dek">Backpropagation is the algorithm that made deep learning possible — an efficient way to answer one question, millions of times: exactly how much did this specific weight contribute to the error?</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>After a network makes a prediction and you measure how wrong it was, you need to know how to adjust each of its (possibly billions of) internal weights to make it less wrong next time. Backpropagation is the method for computing exactly that, for every weight, efficiently.</p><p>It works backward from the output: the error at the final layer tells you how to adjust the weights feeding into it, which in turn tells you how much each earlier layer contributed, and so on back to the input — like tracing blame back through a chain of decisions.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Backpropagation is an application of the <strong>chain rule</strong> from calculus. For a loss <code>L</code> and a weight <code>w</code> several layers back, the gradient <code>∂L/∂w</code> is computed by multiplying together the local derivatives along the path from <code>w</code> to <code>L</code> — reusing shared intermediate results instead of recomputing them layer by layer, which is what makes it efficient enough to run on networks with billions of parameters.</p><p>Once every weight's gradient is known, <strong>gradient descent</strong> updates each weight by a small step in the direction that reduces the loss: <code>w_new = w_old − learning_rate × gradient</code>. The <strong>learning rate</strong> controls step size — too high and training becomes unstable, too low and training takes forever.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FORWARD PASS</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">input → prediction</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">compute loss</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">OUTPUT GRADIENT</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">how wrong was</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">the final layer?</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">CHAIN RULE</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">propagate gradient</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">backward, layer by layer</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">WEIGHT UPDATE</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">nudge every weight</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">via gradient descent</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Error is computed once at the output, then distributed backward through every layer using the chain rule — one backward pass computes every weight's gradient.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">One weight update, with numbers</span>
+        <p>Say a weight <code>w = 0.50</code> and its computed gradient is <code>∂L/∂w = 0.20</code> (increasing this weight would increase the error), with a learning rate of <code>0.1</code>.</p><p><code>w_new = 0.50 − (0.1 × 0.20) = 0.50 − 0.02 = 0.48</code></p><p>That's one tiny nudge, on one weight, from one training example. A real network repeats this for every weight, across every training example, for potentially millions of steps — which is why training large models requires so much compute.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Backpropagation itself is invisible to end users — it only happens during training, never during inference — but it's the mechanism underneath the training of literally every deep learning system in production today: image classifiers, language models, recommendation engines, and generative models.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Backpropagation is a different algorithm from gradient descent.</strong> They're complementary: backprop computes the gradients; gradient descent uses those gradients to actually update the weights.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Backpropagation guarantees finding the best possible model.</strong> It only guarantees moving in a direction that locally reduces error — it can get stuck in suboptimal solutions, which is why techniques like momentum and adaptive learning rates (Adam optimizer) exist to help it escape them.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> backpropagation is just efficient bookkeeping for the chain rule — it doesn't "understand" anything, it mechanically distributes blame for the error backward through the math.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="cnns.html"><span class="ns-eyebrow">Deep Learning</span>CNNs for Images</a>
+        <a href="rnns-lstms.html"><span class="ns-eyebrow">Deep Learning</span>RNNs & LSTMs</a>
+        <a href="gpus-tpus-parallelism.html"><span class="ns-eyebrow">Infrastructure</span>GPUs, TPUs & Parallel Training</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

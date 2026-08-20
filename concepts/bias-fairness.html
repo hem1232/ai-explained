@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bias & Fairness — AI, Explained</title>
+<meta name="description" content="How and why machine learning models produce biased or unfair outcomes, and the main technical approaches used to measure and reduce it.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Ethics, Safety & the Frontier</h4>
+    <ul>
+      <li><a href="bias-fairness.html" class="current">Bias & fairness</a></li>
+      <li><a href="interpretability.html">Interpretability</a></li>
+      <li><a href="scaling-laws.html">Scaling laws</a></li>
+      <li><a href="agi-debate.html">The AGI debate</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="vector-databases-mlops.html">Vector Databases & MLOps</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="interpretability.html">Interpretability</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Ethics, Safety & the Frontier &middot; Concept 01</span>
+    <h1>Bias & Fairness</h1>
+    <p class="dek">A model doesn't need to be programmed with prejudice to produce unfair outcomes — it only needs to learn patterns from data that already reflects historical inequities, which is nearly all real-world data.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>AI bias happens when a model's predictions systematically disadvantage certain groups — not because anyone intended it, but because the training data reflected existing societal patterns, and the model faithfully learned those patterns as if they were the correct rule to follow.</p><p>"Fairness" turns out to be genuinely difficult to define precisely — there are several mathematically valid, well-studied definitions of fairness, and a model can satisfy some of them while violating others simultaneously, which is a real mathematical fact, not just a matter of unclear intentions.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Bias can enter a pipeline at multiple points: <strong>historical bias</strong> (training data reflects real-world inequities, like historical hiring patterns), <strong>representation bias</strong> (some groups are underrepresented in training data), and <strong>measurement bias</strong> (a proxy label imperfectly represents what you actually want to measure — e.g. "arrests" as a proxy for "criminal behavior" conflates the two).</p><p>Common formal fairness definitions include <strong>demographic parity</strong> (positive prediction rates equal across groups), <strong>equalized odds</strong> (true and false positive rates equal across groups), and <strong>predictive parity</strong> (precision equal across groups) — a well-known impossibility result shows that except in special cases, a model can't simultaneously satisfy all of these at once when base rates differ between groups, which forces an explicit choice about which notion of fairness matters most for a given application.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">HISTORICAL DATA</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">reflects real-world</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">inequities</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MODEL TRAINS</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">learns those</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">patterns as "normal"</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">PREDICTIONS</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">reproduce (or amplify)</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">the same disparities</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">AUDIT & MITIGATE</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">measure disparity,</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">apply corrections</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Bias flows in through the data, gets encoded as a learned pattern, and shows up in predictions — auditing and mitigation have to intervene somewhere along this chain.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">A documented real-world case</span>
+        <p>A well-studied 2019 healthcare algorithm used projected healthcare <em>costs</em> as a proxy for patient <em>need</em>, to decide who should be enrolled in extra-care programs. Because less money had historically been spent on Black patients for the same level of underlying illness — often due to unequal healthcare access — the algorithm systematically underestimated how sick Black patients actually were, and recommended them for extra care less often than white patients with equivalent health needs. The model wasn't given race as an input at all; the bias came entirely through a flawed proxy for the outcome it was actually trying to predict.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Fairness auditing is now a standard (and in some jurisdictions, legally required) step for high-stakes ML deployments — hiring algorithms, credit scoring, criminal risk assessment, and healthcare resource allocation are all areas where fairness metrics are actively measured, monitored, and regulated, and where bias incidents have driven real changes in industry and policy.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Removing a sensitive attribute (like race) from the training data prevents bias.</strong> Correlated proxy variables (like zip code) often let a model reconstruct the removed information indirectly — this is well-documented and known as "fairness through unawareness," and it doesn't reliably work.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>There's one single, objectively correct definition of "fair."</strong> Multiple mathematically valid fairness definitions can conflict with each other in provable ways — choosing between them is a values-laden decision, not a purely technical one.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> fairness work requires explicitly deciding, for a given application, which kind of fairness matters most, measuring it directly, and treating that as an ongoing constraint on the system — not something you fix once and forget.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="interpretability.html"><span class="ns-eyebrow">Ethics</span>Interpretability</a>
+        <a href="scaling-laws.html"><span class="ns-eyebrow">Ethics</span>Scaling Laws</a>
+        <a href="agi-debate.html"><span class="ns-eyebrow">Ethics</span>The AGI Debate</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

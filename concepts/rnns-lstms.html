@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RNNs & LSTMs for Sequences — AI, Explained</title>
+<meta name="description" content="How recurrent neural networks and LSTMs process sequential data like text and time series, and why they were eventually overtaken by Transformers.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Neural Networks & Deep Learning</h4>
+    <ul>
+      <li><a href="neural-networks.html">How Neural Networks Learn</a></li>
+      <li><a href="backpropagation.html">Backpropagation, step by step</a></li>
+      <li><a href="cnns.html">CNNs for images</a></li>
+      <li><a href="rnns-lstms.html" class="current">RNNs & LSTMs for sequences</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="cnns.html">CNNs for Images</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="tokenization-embeddings.html">Tokenization & Embeddings</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Deep Learning &middot; Concept 04</span>
+    <h1>RNNs & LSTMs for Sequences</h1>
+    <p class="dek">Before Transformers, this was how machines read text and time series — one step at a time, carrying a memory forward. Understanding why this approach struggled is what makes attention click.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>Recurrent Neural Network (RNN)</strong> processes a sequence one element at a time — one word, one time-step — while carrying forward a "hidden state" that acts like a running summary of everything seen so far.</p><p>The problem: over long sequences, that running summary tends to forget early information (the <strong>vanishing gradient problem</strong>) or lose stability. An <strong>LSTM (Long Short-Term Memory)</strong> network adds gates that explicitly control what to remember, what to forget, and what to output at each step — giving it a much longer effective memory.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>At each timestep <code>t</code>, a basic RNN computes <code>h_t = activation(W_x · x_t + W_h · h_{t-1} + b)</code> — the new hidden state depends on both the current input and the previous hidden state, which is what makes it "recurrent." Backpropagation through a long sequence (called backpropagation through time) tends to shrink or explode gradients as they're multiplied repeatedly across many timesteps.</p><p>An LSTM cell adds a separate <strong>cell state</strong> that acts as a conveyor belt for long-term information, regulated by a <strong>forget gate</strong> (what to discard), an <strong>input gate</strong> (what new information to add), and an <strong>output gate</strong> (what to expose to the next layer) — each a small learned neural network of its own.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">x1</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"the"</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">h1 → x2</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"cat"</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">h2 → x3</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"sat"</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">h3 → output</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">prediction uses</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">all prior context</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Each step's hidden state depends on the current input plus everything carried forward from before — information flows strictly left to right, one token at a time.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Where the memory breaks down</span>
+        <p>In the sentence "The book that the professor, who had taught at three universities over a long and distinguished career, wrote last year became a bestseller," a basic RNN trying to predict "wrote" needs to remember "book" from many words earlier — but by that point, the hidden state has been overwritten dozens of times and the connection has likely faded. An LSTM's dedicated cell state is specifically designed to preserve exactly this kind of long-range dependency better than a plain RNN can.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>RNNs and LSTMs were the standard architecture for machine translation, speech recognition, and text generation from roughly 2014–2018, and are still used today in latency-sensitive or resource-constrained settings (like on-device speech processing) where a full Transformer would be overkill. Transformers have since replaced them for most large-scale language tasks specifically because self-attention handles long-range dependencies more directly, without relying on information surviving a long chain of sequential updates.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>LSTMs are obsolete and never used anymore.</strong> They remain practical for smaller-scale or real-time sequence tasks where a Transformer's compute and memory cost isn't justified.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>RNNs process a whole sequence at once, like Transformers do.</strong> RNNs are inherently sequential — step <code>t</code> can't be computed until step <code>t-1</code> finishes, which also makes them slower to train on modern parallel hardware than Transformers.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> RNNs/LSTMs solve sequence modeling through a chain of memory; Transformers solve it through direct attention between all positions at once — the shift from one to the other is one of the most consequential architecture changes in AI history.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="tokenization-embeddings.html"><span class="ns-eyebrow">NLP</span>Tokenization & Embeddings</a>
+        <a href="attention.html"><span class="ns-eyebrow">NLP</span>Attention, Intuitively</a>
+        <a href="transformers.html"><span class="ns-eyebrow">NLP</span>The Transformer Architecture</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

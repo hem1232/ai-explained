@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Training vs. Inference — AI, Explained</title>
+<meta name="description" content="The two distinct phases of every machine learning system's life: the expensive process of learning, and the fast, repeated process of using what was learned.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Foundations</h4>
+    <ul>
+      <li><a href="what-is-ai.html">What is AI, ML & DL?</a></li>
+      <li><a href="supervised-vs-unsupervised.html">Supervised vs. unsupervised vs. RL</a></li>
+      <li><a href="training-vs-inference.html" class="current">Training vs. inference</a></li>
+      <li><a href="data-features-labels.html">Data, features & labels</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="supervised-vs-unsupervised.html">Supervised vs. Unsupervised vs. RL</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="data-features-labels.html">Data, Features & Labels</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Foundations &middot; Concept 03</span>
+    <h1>Training vs. Inference</h1>
+    <p class="dek">"Training an AI" and "using an AI" are computationally almost opposite activities — one happens once and is brutally expensive, the other happens constantly and needs to be fast and cheap.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Training</strong> is the process of teaching a model — feeding it data over and over, checking its mistakes, and adjusting its internal numbers until it gets good at the task. This can take anywhere from minutes to months and often costs serious money in compute.</p><p><strong>Inference</strong> is everything that happens after: using the already-trained model to make a prediction on new data, one time, quickly. When you ask a chatbot a question, you're triggering inference, not training — the model's weights don't change from talking to you.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>During training, the model repeatedly performs a forward pass (compute a prediction), measures the loss (how wrong that prediction was), and performs a backward pass (adjust weights to reduce that loss) — see backpropagation. This loop runs over the training dataset for many <strong>epochs</strong>, and requires storing gradients and often running on specialized hardware (GPUs/TPUs) in parallel.</p><p>During inference, only the forward pass runs — the model's weights are frozen. No gradients are computed and no data is stored for correction. This makes inference dramatically cheaper per request than training, though at massive scale (millions of users) inference cost in aggregate can still exceed training cost.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 612 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TRAINING</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">forward + backward pass</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">runs for days/weeks</text>
+<text x="110.0" y="116" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">weights are updated</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FROZEN MODEL</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">weights locked</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">saved to disk</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">INFERENCE</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">forward pass only</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">runs in milliseconds</text>
+<text x="502.0" y="116" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">weights unchanged</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Training happens once (or periodically); inference happens every single time someone uses the model.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">A concrete cost comparison</span>
+        <p>Training a large language model from scratch can involve processing trillions of tokens across thousands of GPUs running for weeks — costs that can reach tens of millions of dollars for frontier models. A single inference request — you typing a question and getting an answer — might take under a second and cost a small fraction of a cent. The asymmetry is why companies train a model once and then serve it to millions of users: the enormous training cost gets amortized across an enormous number of cheap inferences.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>This split explains a lot of AI product design: a company might retrain (or fine-tune) its model monthly while serving inference continuously, 24/7, at global scale. It's also why "the model learned something from our conversation" is usually false for most consumer chatbots — nothing is being trained in real time; the illusion of memory comes from re-feeding the conversation history back in at each inference step.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Talking to a chatbot trains it on your conversation in real time.</strong> Typically false — inference doesn't update weights. Any "memory" comes from re-supplying context, or from a separate, later training/fine-tuning process the company runs deliberately.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Inference is trivial and doesn't need optimization.</strong> At scale, inference cost and latency are major engineering problems — this is what techniques like quantization and model distillation exist to address.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> training builds the model's knowledge; inference is spending that knowledge, one query at a time, without changing it.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="data-features-labels.html"><span class="ns-eyebrow">Foundations</span>Data, Features & Labels</a>
+        <a href="neural-networks.html"><span class="ns-eyebrow">Deep Learning</span>How Neural Networks Learn</a>
+        <a href="gpus-tpus-parallelism.html"><span class="ns-eyebrow">Infrastructure</span>GPUs, TPUs & Parallel Training</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

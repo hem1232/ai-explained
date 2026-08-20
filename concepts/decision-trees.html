@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Trees & Random Forests — AI, Explained</title>
+<meta name="description" content="How decision trees split data into if-then rules, and how random forests combine many trees to make more reliable predictions.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Core Machine Learning</h4>
+    <ul>
+      <li><a href="regression.html">Linear & logistic regression</a></li>
+      <li><a href="decision-trees.html" class="current">Decision trees & random forests</a></li>
+      <li><a href="overfitting-regularization.html">Overfitting & regularization</a></li>
+      <li><a href="evaluation-metrics.html">Evaluation: precision, recall, F1, ROC</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="regression.html">Linear & Logistic Regression</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="overfitting-regularization.html">Overfitting & Regularization</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Core Machine Learning &middot; Concept 02</span>
+    <h1>Decision Trees & Random Forests</h1>
+    <p class="dek">A decision tree is the ML model that looks most like human reasoning — a chain of yes/no questions. A random forest is what happens when you stop trusting just one chain of questions.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>decision tree</strong> predicts by asking a series of yes/no questions about the data — "is income above $50k? Is debt ratio above 30%?" — branching further at each answer until it reaches a final prediction.</p><p>A <strong>random forest</strong> trains hundreds of slightly different decision trees, each seeing a random subset of the data and features, then lets them vote — averaging out any single tree's blind spots.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>At each node, a decision tree chooses the feature and threshold split that best separates the data — commonly measured by <strong>Gini impurity</strong> or <strong>information gain</strong> — and repeats recursively on each resulting subset until a stopping condition (max depth, minimum samples per leaf) is reached.</p><p>Random forests are an <strong>ensemble method</strong>: they reduce variance by combining many high-variance, low-bias trees via <strong>bagging</strong> (bootstrap aggregating) — training each tree on a random sample of the data drawn with replacement — plus random feature selection at each split, which decorrelates the trees so their errors don't all point the same direction.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">ROOT</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">income > $50k?</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">SPLIT</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">debt ratio > 30%?</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">LEAF</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">predict: approve</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">or deny</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FOREST</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">100s of trees vote</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ final prediction</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">A single tree asks a chain of questions down to a leaf; a forest runs many different trees and combines their votes.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">One tree's decision path</span>
+        <p>For a loan applicant with income $65k and debt ratio 25%: the tree first checks <code>income > $50k?</code> → yes, go right. Then <code>debt_ratio > 30%?</code> → no, go left. That path lands on a leaf that says "approve" because 92% of training applicants who followed this exact path repaid their loan. A random forest would run this applicant through 200 such trees, each built slightly differently, and approve only if a strong majority agree.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Random forests and their close relative, gradient-boosted trees (like XGBoost), are the dominant approach for structured/tabular data in industry — fraud detection, churn prediction, and most Kaggle-competition-winning models on non-image, non-text data use tree ensembles rather than neural networks.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>A single decision tree is usually accurate enough to deploy.</strong> Individual trees overfit easily and are highly sensitive to small changes in training data — ensembles exist specifically to fix this instability.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Random forests can't be interpreted, like neural networks.</strong> They're actually more interpretable than deep learning — feature importance scores tell you which inputs the forest relies on most, even if you can't trace one exact decision path.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> use a single tree when you need a fully transparent rule set; use a forest (or boosted trees) when you need accuracy on tabular data and can tolerate slightly less transparency.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="overfitting-regularization.html"><span class="ns-eyebrow">Core ML</span>Overfitting & Regularization</a>
+        <a href="evaluation-metrics.html"><span class="ns-eyebrow">Core ML</span>Evaluation Metrics</a>
+        <a href="recommendation-systems.html"><span class="ns-eyebrow">Applied AI</span>Recommendation Systems</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

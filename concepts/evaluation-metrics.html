@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluation: Precision, Recall, F1 & ROC — AI, Explained</title>
+<meta name="description" content="How to actually measure whether a classification model is good — beyond simple accuracy, using precision, recall, F1 score, and ROC curves.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Core Machine Learning</h4>
+    <ul>
+      <li><a href="regression.html">Linear & logistic regression</a></li>
+      <li><a href="decision-trees.html">Decision trees & random forests</a></li>
+      <li><a href="overfitting-regularization.html">Overfitting & regularization</a></li>
+      <li><a href="evaluation-metrics.html" class="current">Evaluation: precision, recall, F1, ROC</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="overfitting-regularization.html">Overfitting & Regularization</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="neural-networks.html">How Neural Networks Learn</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Core Machine Learning &middot; Concept 04</span>
+    <h1>Evaluation: Precision, Recall, F1 & ROC</h1>
+    <p class="dek">"95% accurate" can describe both an excellent model and a nearly useless one — it depends entirely on what mistakes cost you.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Precision</strong> answers: of everything the model flagged as positive, how much was actually positive? <strong>Recall</strong> answers: of everything that was actually positive, how much did the model catch? These two usually trade off against each other.</p><p>The <strong>F1 score</strong> combines precision and recall into a single number when you need to balance both. The <strong>ROC curve</strong> shows how that trade-off shifts as you adjust the model's decision threshold, letting you pick the balance that fits your situation.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Given a confusion matrix of true/false positives and negatives: <code>Precision = TP / (TP + FP)</code>, <code>Recall = TP / (TP + FN)</code>, and <code>F1 = 2 × (Precision × Recall) / (Precision + Recall)</code> — the harmonic mean, which punishes a big imbalance between the two more than a simple average would.</p><p>The <strong>ROC curve</strong> plots the true positive rate against the false positive rate across every possible classification threshold; the <strong>AUC</strong> (area under the curve) summarizes overall discriminative ability in one number, where 1.0 is a perfect classifier and 0.5 is no better than random guessing.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">PREDICTIONS</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">model outputs a</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">probability score</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">THRESHOLD</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">e.g. flag if > 0.5</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">CONFUSION MATRIX</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">TP, FP, TN, FN</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">METRICS</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">precision, recall,</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">F1, AUC</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Every metric downstream of the confusion matrix depends on where you set the decision threshold — move it, and precision/recall trade off against each other.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Why accuracy alone lies</span>
+        <p>A cancer-screening model is tested on 1,000 patients, only 10 of whom actually have the disease. A lazy model that predicts "no cancer" for everyone scores <strong>99% accuracy</strong> — while catching zero real cases. Its recall is 0%. A genuinely useful model here needs high recall (catch nearly every real case) even at the cost of some precision (a few unnecessary follow-up tests) — which is exactly the kind of trade-off accuracy alone hides.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Which metric to optimize depends entirely on the cost of each error type: spam filters favor precision (don't lose real emails to the spam folder), medical screening favors recall (don't miss a real diagnosis), and fraud detection typically needs a carefully tuned balance of both, chosen by looking at the ROC curve at multiple threshold points.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>The model with the highest accuracy is the best model.</strong> On imbalanced data — which describes most real-world classification problems — accuracy is often the least informative metric available.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Precision and recall can both be maximized at once.</strong> They fundamentally trade off against each other as you move the classification threshold; the goal is choosing the right point on that trade-off, not eliminating it.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> decide what a false positive costs you and what a false negative costs you before picking a metric — the "right" metric is a business decision, not a purely mathematical one.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="neural-networks.html"><span class="ns-eyebrow">Deep Learning</span>How Neural Networks Learn</a>
+        <a href="bias-fairness.html"><span class="ns-eyebrow">Ethics</span>Bias & Fairness</a>
+        <a href="computer-vision-speech.html"><span class="ns-eyebrow">Applied AI</span>Computer Vision & Speech</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

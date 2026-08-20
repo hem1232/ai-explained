@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Supervised vs. Unsupervised vs. Reinforcement Learning — AI, Explained</title>
+<meta name="description" content="The three main ways machines learn from data — with labels, without labels, and through trial and reward — explained with examples.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Foundations</h4>
+    <ul>
+      <li><a href="what-is-ai.html">What is AI, ML & DL?</a></li>
+      <li><a href="supervised-vs-unsupervised.html" class="current">Supervised vs. unsupervised vs. RL</a></li>
+      <li><a href="training-vs-inference.html">Training vs. inference</a></li>
+      <li><a href="data-features-labels.html">Data, features & labels</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="what-is-ai.html">What is AI, ML & DL?</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="training-vs-inference.html">Training vs. Inference</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Foundations &middot; Concept 02</span>
+    <h1>Supervised vs. Unsupervised vs. Reinforcement Learning</h1>
+    <p class="dek">Almost every ML system fits into one of three learning setups. The difference isn't the algorithm — it's what kind of feedback the model gets while training.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Supervised learning</strong> is learning with an answer key: you show the model thousands of examples, each already labeled with the correct answer, and it learns to predict that answer for new, unlabeled examples.</p><p><strong>Unsupervised learning</strong> has no answer key at all — you hand the model a pile of data and ask it to find structure on its own, like grouping similar customers together without being told what "similar" means.</p><p><strong>Reinforcement learning</strong> is learning by doing: an agent takes actions in an environment and gets a reward or penalty, gradually learning which actions lead to better outcomes — closer to how a dog learns tricks than how a student studies flashcards.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>In supervised learning, training data is a set of pairs <code>(x, y)</code>, and the model learns a function that minimizes the difference between its predicted <code>ŷ</code> and the true <code>y</code>. This covers both <strong>classification</strong> (discrete labels, like spam/not-spam) and <strong>regression</strong> (continuous values, like a price).</p><p>In unsupervised learning, training data is just <code>x</code> — no labels. Common tasks include <strong>clustering</strong> (grouping similar points) and <strong>dimensionality reduction</strong> (compressing data while preserving its structure).</p><p>In reinforcement learning, an <strong>agent</strong> observes a <strong>state</strong>, takes an <strong>action</strong>, and receives a <strong>reward</strong>, with the goal of learning a <strong>policy</strong> — a strategy for choosing actions — that maximizes cumulative reward over time. Unlike the other two, the model's own actions affect what data it sees next.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 612 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">SUPERVISED</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">labeled data in</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ predicts y</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">UNSUPERVISED</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">unlabeled data in</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ finds structure</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">REINFORCEMENT</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">action → reward</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ learns policy</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Three different feedback signals — a right answer, no signal at all, or a reward — produce three different kinds of learning.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Same data, three ways</span>
+        <p>Take a dataset of 10,000 customer purchases. <strong>Supervised:</strong> if each purchase is labeled "fraud" or "legitimate," you can train a model to flag new fraudulent purchases. <strong>Unsupervised:</strong> with no fraud labels at all, you could still cluster customers into spending-behavior groups and flag anyone who doesn't fit any cluster as an anomaly. <strong>Reinforcement:</strong> a pricing agent that adjusts prices in real time and gets "reward" = revenue is learning a pricing policy through trial and error, not from a labeled dataset at all.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Supervised learning powers most day-to-day ML products: spam filters, credit scoring, medical image diagnosis. Unsupervised learning shows up in customer segmentation, anomaly detection, and as a pretraining step for other models. Reinforcement learning is behind game-playing systems like AlphaGo, robotics control, and — notably — the RLHF step used to align chatbots like ChatGPT and Claude with human preferences.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Unsupervised learning is "easier" because it needs no labels.</strong> It's often harder — without ground truth, there's no simple way to check if the model got it right.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Reinforcement learning is just supervised learning with delayed labels.</strong> RL has to solve credit assignment (which of many past actions caused this reward?) and explore unknown strategies — problems supervised learning never faces.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> the choice isn't about which is "better" — it's about what kind of feedback your problem actually gives you. Most real products end up combining more than one.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="training-vs-inference.html"><span class="ns-eyebrow">Foundations</span>Training vs. Inference</a>
+        <a href="data-features-labels.html"><span class="ns-eyebrow">Foundations</span>Data, Features & Labels</a>
+        <a href="regression.html"><span class="ns-eyebrow">Core ML</span>Linear & Logistic Regression</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

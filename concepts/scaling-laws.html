@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Scaling Laws — AI, Explained</title>
+<meta name="description" content="The empirical relationships between model size, data, compute, and performance that have driven the strategy behind modern large AI models.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Ethics, Safety & the Frontier</h4>
+    <ul>
+      <li><a href="bias-fairness.html">Bias & fairness</a></li>
+      <li><a href="interpretability.html">Interpretability</a></li>
+      <li><a href="scaling-laws.html" class="current">Scaling laws</a></li>
+      <li><a href="agi-debate.html">The AGI debate</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="interpretability.html">Interpretability</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="agi-debate.html">The AGI Debate</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Ethics, Safety & the Frontier &middot; Concept 03</span>
+    <h1>Scaling Laws</h1>
+    <p class="dek">One empirical observation, more than any single algorithmic breakthrough, explains why AI labs started building ever-larger models: performance improves in a remarkably predictable way as you scale up.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Scaling laws</strong> are empirical patterns showing that a model's performance improves smoothly and predictably as you increase three things together: the number of parameters in the model, the amount of training data, and the amount of compute used to train it.</p><p>This predictability is what let AI labs justify enormous training runs before they finished: you can train several smaller models, plot how their performance improves with scale, and extrapolate that curve to estimate how a much larger, much more expensive model will perform — before spending the money to actually build it.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Research from OpenAI (2020) and later DeepMind's "Chinchilla" paper (2022) found that a model's loss follows an approximate power-law relationship with model size, dataset size, and compute — and critically, that for a fixed compute budget, there's an optimal balance between model size and data size; many earlier large models were significantly <strong>undertrained</strong> relative to their parameter count, meaning a smaller model trained on proportionally more data would have performed better for the same compute cost.</p><p>These laws don't hold indefinitely — they're empirical trends observed over the ranges tested, not fundamental physical laws, and there's active debate over exactly where and how they eventually break down, as well as growing attention to <strong>inference-time compute scaling</strong> (letting a model "think longer" at answer time) as a complementary lever alongside pretraining scale.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MORE PARAMETERS</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">bigger model</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MORE DATA</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">more training</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">tokens</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MORE COMPUTE</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">more GPU-hours</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">to train</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">LOWER LOSS</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">predictably, following</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">a power law</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Scaling laws describe how these three inputs jointly and predictably drive down a model's training loss — the empirical basis for planning multi-million-dollar training runs in advance.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Why Chinchilla changed strategy industry-wide</span>
+        <p>GPT-3 (2020) had 175 billion parameters but was trained on roughly 300 billion tokens. DeepMind's Chinchilla analysis (2022) found that a compute-optimal model of that same training budget should have used a smaller model with far more training data — their 70-billion-parameter Chinchilla model, trained on 1.4 trillion tokens, outperformed the much larger GPT-3 on most benchmarks. This single finding shifted industry strategy away from "bigger is always better" toward carefully balancing model size against data volume for a given compute budget.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Scaling laws directly inform the multi-hundred-million-dollar decisions AI labs make about how to allocate compute budgets between model size, data collection, and training duration before starting an expensive training run — de-risking these decisions using smaller, cheaper experiments that reliably predict how the full-scale run will behave.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Scaling laws guarantee AI capabilities will keep improving indefinitely just by adding more compute.</strong> They describe smooth, predictable improvement in loss on the training objective — how that translates into specific real-world capabilities, and whether the trend continues past current scales, are both genuinely open questions.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>"Bigger model" and "better model" are the same thing.</strong> The Chinchilla finding specifically demonstrated the opposite — a smaller, better-trained model can outperform a larger, undertrained one for the same total compute cost.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> scaling laws are a powerful predictive tool for planning training runs, not a guarantee about the future — they describe a trend observed so far, within a specific measured range.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="agi-debate.html"><span class="ns-eyebrow">Ethics</span>The AGI Debate</a>
+        <a href="pretraining-finetuning-rlhf.html"><span class="ns-eyebrow">NLP</span>Pretraining, Fine-tuning & RLHF</a>
+        <a href="gpus-tpus-parallelism.html"><span class="ns-eyebrow">Infrastructure</span>GPUs, TPUs & Parallel Training</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

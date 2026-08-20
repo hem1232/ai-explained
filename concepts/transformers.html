@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Transformer Architecture — AI, Explained</title>
+<meta name="description" content="How the Transformer architecture works: tokenization, embeddings, self-attention, and next-token prediction — the mechanism behind GPT-style language models.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>NLP &amp; Language Models</h4>
+    <ul>
+      <li><a href="tokenization-embeddings.html">Tokenization &amp; embeddings</a></li>
+      <li><a href="attention.html">Attention, intuitively</a></li>
+      <li><a href="transformers.html" class="current">The Transformer Architecture</a></li>
+      <li><a href="pretraining-finetuning-rlhf.html">Pretraining, fine-tuning &amp; RLHF</a></li>
+      <li><a href="rag-agents.html">RAG &amp; AI agents</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="neural-networks.html">How Neural Networks Learn</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="pretraining-finetuning-rlhf.html">Pretraining, Fine-tuning &amp; RLHF</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">NLP &amp; Language Models · Concept 03</span>
+    <h1>The Transformer Architecture</h1>
+    <p class="dek">The architecture behind GPT, Claude, and essentially every modern language model. Its one big idea — self-attention — lets a model weigh every word against every other word at once, instead of reading one at a time.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>Older language models read text left to right, one word at a time, like a person with a very short memory — by the time they reached the end of a long sentence, they'd half-forgotten the beginning.</p>
+      <p>A Transformer instead looks at the whole sentence at once and asks, for every word: <em>which other words in this sentence actually matter to understanding me?</em> In "the trophy didn't fit in the suitcase because <strong>it</strong> was too big," the model has to figure out whether "it" refers to the trophy or the suitcase — self-attention is the mechanism that lets it weigh "trophy" more heavily than "suitcase" for that specific word.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Text is first split into <strong>tokens</strong> (word pieces), and each token is mapped to a vector — a list of numbers — called an <strong>embedding</strong>, which captures aspects of its meaning. Because self-attention has no built-in sense of order, a <strong>positional encoding</strong> is added so the model knows word 3 came before word 7.</p>
+      <p>In <strong>self-attention</strong>, every token generates three vectors: a <em>Query</em> (what am I looking for?), a <em>Key</em> (what do I contain?), and a <em>Value</em> (what do I actually offer?). Each token's Query is compared against every other token's Key to produce attention scores — how much each other token should influence this one — which are then used to blend the Values into a new, context-aware representation. Stack this "attention → feed-forward" block a few dozen times, and you get a full Transformer. To generate text, the final layer predicts a probability distribution over the next possible token, one token at a time.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow, interactively</h2>
+      <div class="diagram-card interactive-diagram">
+        <svg viewBox="0 0 780 260" xmlns="http://www.w3.org/2000/svg">
+          <g class="layer" data-tip="<b>Tokenization</b> — the input text is split into sub-word tokens. 'unbelievable' might become 'un' + 'believ' + 'able'. Each token gets an ID number from a fixed vocabulary.">
+            <rect x="20" y="90" width="120" height="70" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <text x="80" y="120" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TOKENIZE</text>
+            <text x="80" y="140" text-anchor="middle" font-family="Inter" font-size="10" fill="#7B8296">"it" "was" "big"</text>
+          </g>
+          <g class="layer" data-tip="<b>Embedding + positional encoding</b> — each token becomes a vector of numbers representing meaning, plus a signal for its position in the sequence.">
+            <rect x="180" y="90" width="120" height="70" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <text x="240" y="120" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">EMBED</text>
+            <text x="240" y="140" text-anchor="middle" font-family="Inter" font-size="10" fill="#7B8296">token → vector</text>
+          </g>
+          <g class="layer" data-tip="<b>Self-attention</b> — every token compares its Query against every other token's Key to decide how much attention to pay to it, then blends in their Values. This is how 'it' learns to point back at 'trophy'.">
+            <rect x="340" y="60" width="160" height="130" rx="10" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+            <text x="420" y="95" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">SELF-ATTENTION</text>
+            <text x="420" y="115" text-anchor="middle" font-family="Inter" font-size="10" fill="#4A5164">Query · Key · Value</text>
+            <text x="420" y="132" text-anchor="middle" font-family="Inter" font-size="10" fill="#4A5164">for every token pair</text>
+            <text x="420" y="160" text-anchor="middle" font-family="Inter" font-size="10" fill="#4A5164">(repeated ~40–100×)</text>
+          </g>
+          <g class="layer" data-tip="<b>Feed-forward layer</b> — after attention mixes context between tokens, each token's vector passes through its own small neural network to further refine it.">
+            <rect x="540" y="90" width="120" height="70" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <text x="600" y="120" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FEED-FORWARD</text>
+            <text x="600" y="140" text-anchor="middle" font-family="Inter" font-size="10" fill="#7B8296">per-token refine</text>
+          </g>
+          <g class="layer" data-tip="<b>Next-token prediction</b> — the model outputs a probability for every possible next token. Text generation repeats this process one token at a time, feeding each new token back in.">
+            <rect x="700" y="90" width="65" height="70" rx="10" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+            <text x="732" y="120" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#12151C">NEXT</text>
+            <text x="732" y="136" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#12151C">TOKEN</text>
+          </g>
+          <g stroke="#B7C0D1" stroke-width="1.5" fill="none" marker-end="url(#arrow2)">
+            <path d="M140,125 L178,125"/>
+            <path d="M300,125 L338,125"/>
+            <path d="M500,125 L538,125"/>
+            <path d="M660,125 L698,125"/>
+          </g>
+          <path d="M420,190 C420,215 340,215 340,190" stroke="#7B8296" stroke-width="1.2" fill="none" stroke-dasharray="3 3" marker-end="url(#arrow2)"/>
+          <text x="420" y="230" text-anchor="middle" font-family="IBM Plex Mono" font-size="10" fill="#7B8296">this block repeats N times ("layers")</text>
+          <defs>
+            <marker id="arrow2" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="diagram-tooltip" id="diagram-tooltip">Hover or tap a stage above to see what it does.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Attention resolving a pronoun</span>
+        <p>Sentence: <em>"The trophy didn't fit in the suitcase because it was too big."</em></p>
+        <p>When the model processes the token "it," self-attention computes a score between "it"'s Query and every other token's Key. Roughly:</p>
+        <div class="code-block"><span class="c1">// simplified attention scores for "it" (before softmax)</span>
+"it" → "trophy"    : <span class="str">4.8</span>   <span class="c1">// high — likely referent</span>
+"it" → "suitcase"  : <span class="str">1.2</span>
+"it" → "fit"       : <span class="str">0.6</span>
+"it" → "because"   : <span class="str">0.1</span></div>
+        <p>After softmax normalization, "trophy" ends up dominating the blended representation for "it" — the model has effectively resolved the pronoun, purely from co-occurrence patterns learned during training, with no hand-coded grammar rule involved.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Every major chat-based AI system — GPT-4/5-class models, Claude, Gemini, Llama — is a Transformer, usually a "decoder-only" variant tuned for next-token generation. The same architecture (with a different assembly) also powers modern machine translation, and vision Transformers now compete with CNNs on image tasks.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+      <div class="misconception"><span class="x">✕</span><p><strong>"Attention" means the model is paying attention like a person does.</strong> It's a specific, learned matrix-multiplication mechanism for weighting token relevance — the word is a useful metaphor, not a description of awareness.</p></div>
+      <div class="misconception"><span class="x">✕</span><p><strong>Bigger context window = the model "remembers" everything perfectly.</strong> Attention can weigh distant tokens, but in practice models still attend unevenly across very long contexts — information in the middle is often used less reliably than at the edges.</p></div>
+      <div class="misconception"><span class="check">✓</span><p><strong>Correct framing:</strong> a Transformer is a next-token predictor trained on enormous text corpora. Fluent, coherent output emerges from that objective at scale — it's not a separate "understanding module" bolted onto prediction.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="pretraining-finetuning-rlhf.html"><span class="ns-eyebrow">NLP</span>Pretraining, Fine-tuning &amp; RLHF</a>
+        <a href="rag-agents.html"><span class="ns-eyebrow">NLP</span>RAG &amp; AI Agents</a>
+        <a href="diffusion-models.html"><span class="ns-eyebrow">Generative AI</span>Diffusion Models</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

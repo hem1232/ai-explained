@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Neural Networks Learn — AI, Explained</title>
+<meta name="description" content="How neural networks work: neurons, weights, activation functions, and backpropagation, explained with an interactive diagram and a worked numerical example.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Deep Learning</h4>
+    <ul>
+      <li><a href="neural-networks.html" class="current">How Neural Networks Learn</a></li>
+      <li><a href="backpropagation.html">Backpropagation, step by step</a></li>
+      <li><a href="cnns.html">CNNs for images</a></li>
+      <li><a href="rnns-lstms.html">RNNs &amp; LSTMs</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="what-is-ai.html">What is AI, ML &amp; DL?</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="transformers.html">The Transformer Architecture</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Deep Learning · Concept 01</span>
+    <h1>How Neural Networks Learn</h1>
+    <p class="dek">A neural network is a chain of simple arithmetic — multiply, add, squash — repeated thousands of times. The "learning" is just slowly adjusting the numbers in that arithmetic until the output stops being wrong.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>Imagine you're guessing a house's price from its size. You start with a rule: <em>price ≈ size × 200</em>. You check it against a real sale, see you're off by a lot, and nudge the "200" up or down. Do that thousands of times across thousands of houses, and the number converges on something genuinely useful.</p>
+      <p>A neural network does exactly this, but with millions of adjustable numbers ("weights") instead of one, arranged in layers so it can capture patterns far more complex than a single multiplication.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Each artificial <strong>neuron</strong> computes a weighted sum of its inputs, adds a bias, and passes the result through a non-linear <strong>activation function</strong> (like ReLU or sigmoid) — without that non-linearity, stacking layers would collapse into a single linear equation, no matter how many layers you added.</p>
+      <p>Neurons are arranged into an <strong>input layer</strong>, one or more <strong>hidden layers</strong>, and an <strong>output layer</strong>. Data flows forward through the layers (the "forward pass") to produce a prediction. The network compares that prediction to the true answer using a <strong>loss function</strong>, then <strong>backpropagation</strong> uses calculus (the chain rule) to work out how much each individual weight contributed to the error — and <strong>gradient descent</strong> nudges every weight slightly in the direction that reduces it.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow, interactively</h2>
+      <div class="diagram-card interactive-diagram">
+        <svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- input layer -->
+          <g class="layer" data-tip="<b>Input layer</b> — raw features go in here unchanged. For a house-price model: size, bedrooms, location score.">
+            <rect x="30" y="40" width="140" height="220" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <circle cx="100" cy="80" r="12" fill="#3557FF" opacity="0.15" stroke="#3557FF"/>
+            <circle cx="100" cy="150" r="12" fill="#3557FF" opacity="0.15" stroke="#3557FF"/>
+            <circle cx="100" cy="220" r="12" fill="#3557FF" opacity="0.15" stroke="#3557FF"/>
+            <text x="100" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">INPUT</text>
+          </g>
+
+          <!-- hidden layer 1 -->
+          <g class="layer" data-tip="<b>Hidden layer</b> — each neuron computes a weighted sum of every input, adds a bias, then applies an activation function (e.g. ReLU: negative values become 0). This is where patterns get combined.">
+            <rect x="230" y="20" width="140" height="260" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <circle cx="300" cy="60" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <circle cx="300" cy="115" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <circle cx="300" cy="170" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <circle cx="300" cy="225" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <text x="300" y="308" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">HIDDEN 1</text>
+          </g>
+
+          <!-- hidden layer 2 -->
+          <g class="layer" data-tip="<b>A second hidden layer</b> — combines the patterns the first layer found into higher-level patterns. More layers = 'deeper' network, able to represent more abstract relationships.">
+            <rect x="430" y="40" width="140" height="220" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <circle cx="500" cy="90" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <circle cx="500" cy="150" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <circle cx="500" cy="210" r="12" fill="#1F8A70" opacity="0.15" stroke="#1F8A70"/>
+            <text x="500" y="20" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">HIDDEN 2</text>
+          </g>
+
+          <!-- output layer -->
+          <g class="layer" data-tip="<b>Output layer</b> — produces the final prediction (e.g. predicted price = $412,000). Its error against the true price is what backpropagation uses to correct every weight upstream.">
+            <rect x="630" y="120" width="110" height="60" rx="10" fill="#FFFFFF" stroke="#D6DCE7"/>
+            <circle cx="685" cy="150" r="14" fill="#F2A93B" opacity="0.2" stroke="#F2A93B"/>
+            <text x="685" y="105" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">OUTPUT</text>
+          </g>
+
+          <!-- connecting lines (sampled, not exhaustive, for readability) -->
+          <g stroke="#D6DCE7" stroke-width="1">
+            <line x1="112" y1="80" x2="288" y2="60"/>
+            <line x1="112" y1="80" x2="288" y2="115"/>
+            <line x1="112" y1="150" x2="288" y2="115"/>
+            <line x1="112" y1="150" x2="288" y2="170"/>
+            <line x1="112" y1="220" x2="288" y2="170"/>
+            <line x1="112" y1="220" x2="288" y2="225"/>
+            <line x1="312" y1="60" x2="488" y2="90"/>
+            <line x1="312" y1="115" x2="488" y2="90"/>
+            <line x1="312" y1="170" x2="488" y2="150"/>
+            <line x1="312" y1="225" x2="488" y2="210"/>
+            <line x1="512" y1="90" x2="632" y2="150"/>
+            <line x1="512" y1="150" x2="632" y2="150"/>
+            <line x1="512" y1="210" x2="632" y2="150"/>
+          </g>
+
+          <!-- backward pass arrow -->
+          <path d="M685,190 C500,260 300,260 100,240" stroke="#C23B3B" stroke-width="1.5" fill="none" stroke-dasharray="4 4" marker-end="url(#arrow)"/>
+          <text x="380" y="278" text-anchor="middle" font-family="IBM Plex Mono" font-size="11" fill="#C23B3B">backpropagation: error flows backward, adjusting every weight</text>
+
+          <defs>
+            <marker id="arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 Z" fill="#C23B3B"/>
+            </marker>
+          </defs>
+        </svg>
+        <div class="diagram-tooltip" id="diagram-tooltip">Hover or tap a layer above to see what it does.</div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">One tiny forward pass, with real numbers</span>
+        <p>Say we're predicting whether an email is spam using two inputs: <code>x1</code> = number of exclamation marks (3), <code>x2</code> = contains the word "free" (1 = yes). One neuron has weights <code>w1 = 0.4</code>, <code>w2 = 1.2</code>, and bias <code>b = -1.0</code>.</p>
+        <div class="code-block"><span class="c1">// weighted sum</span>
+z = (x1 × w1) + (x2 × w2) + b
+z = (3 × 0.4) + (1 × 1.2) + (-1.0)
+z = 1.2 + 1.2 - 1.0
+z = <span class="str">1.4</span>
+
+<span class="c1">// activation: sigmoid squashes z to a 0–1 probability</span>
+sigmoid(1.4) = 1 / (1 + e^-1.4) ≈ <span class="str">0.80</span></div>
+        <p>The network outputs 0.80 — "80% likely spam." If the email really was spam (true label = 1), the error is small and weights barely move. If it wasn't (true label = 0), backpropagation pushes <code>w1</code>, <code>w2</code>, and <code>b</code> down slightly so this email would score lower next time.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>This exact structure — layers, weights, backprop — sits underneath image classifiers on your phone (is this photo a dog?), credit-scoring models, and the first layer of every large language model. The architectures get far more elaborate (see: CNNs, Transformers), but the learning mechanism underneath is the same forward-pass-then-backprop loop.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+      <div class="misconception"><span class="x">✕</span><p><strong>"The network understands the input."</strong> It's fitting a function to minimize error on training examples — there's no comprehension, just a very good statistical approximation.</p></div>
+      <div class="misconception"><span class="x">✕</span><p><strong>More layers always means a smarter model.</strong> Beyond a point, extra depth causes vanishing gradients and overfitting without careful techniques (residual connections, normalization) — bigger isn't automatically better.</p></div>
+      <div class="misconception"><span class="check">✓</span><p><strong>Correct framing:</strong> a neural network is a very flexible curve-fitter. Its power comes from having enough adjustable parameters and enough data to fit an extremely complex curve — nothing more mystical than that.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="backpropagation.html"><span class="ns-eyebrow">Deep Learning</span>Backpropagation, Step by Step</a>
+        <a href="cnns.html"><span class="ns-eyebrow">Deep Learning</span>CNNs for Images</a>
+        <a href="transformers.html"><span class="ns-eyebrow">NLP · Live</span>The Transformer Architecture</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

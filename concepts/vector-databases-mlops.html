@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vector Databases & MLOps — AI, Explained</title>
+<meta name="description" content="The infrastructure that makes AI products work in production — vector databases for similarity search, and MLOps for reliably deploying and monitoring models.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Applied AI & Infrastructure</h4>
+    <ul>
+      <li><a href="computer-vision-speech.html">Computer vision & speech</a></li>
+      <li><a href="recommendation-systems.html">Recommendation systems</a></li>
+      <li><a href="gpus-tpus-parallelism.html">GPUs, TPUs & parallel training</a></li>
+      <li><a href="vector-databases-mlops.html" class="current">Vector databases & MLOps</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="gpus-tpus-parallelism.html">GPUs, TPUs & Parallel Training</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="bias-fairness.html">Bias & Fairness</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Infrastructure &middot; Concept 02</span>
+    <h1>Vector Databases & MLOps</h1>
+    <p class="dek">A great model is only the beginning. Getting it to run reliably, be searchable, and stay accurate in production requires an entire supporting infrastructure layer.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>vector database</strong> stores embeddings and is built to answer one question extremely fast, even across billions of entries: "which stored items are most similar to this new one?" — the core operation behind semantic search and RAG systems.</p><p><strong>MLOps</strong> is the discipline of reliably building, deploying, monitoring, and updating machine learning models in production — the ML equivalent of DevOps, dealing with problems unique to models, like performance quietly degrading as the real world drifts away from the training data.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Vector databases (like Pinecone, Weaviate, or pgvector) use <strong>Approximate Nearest Neighbor (ANN)</strong> search algorithms — such as HNSW (Hierarchical Navigable Small World graphs) — to find close matches in high-dimensional embedding space in roughly logarithmic time, trading a small amount of accuracy for massive speed gains over brute-force comparison against every stored vector.</p><p>MLOps pipelines typically include: automated retraining triggers, <strong>A/B testing</strong> of new model versions against production traffic, and monitoring for <strong>data drift</strong> (when incoming data's statistical properties diverge from training data) and <strong>model drift</strong> (when real-world performance degrades over time even without input changes) — since a model that was accurate at launch can silently become unreliable as the world it's making predictions about changes.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MODEL TRAINED</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">validated offline</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">DEPLOY</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">serve behind an</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">API endpoint</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">MONITOR</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">track drift &</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">live accuracy</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RETRAIN</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">trigger update when</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">performance degrades</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Production ML is a loop, not a one-time deployment — models need continuous monitoring and periodic retraining to stay accurate as real-world data shifts.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Data drift in practice</span>
+        <p>A fraud-detection model trained on 2023 transaction patterns might see its precision quietly drop from 91% to 78% over a year — not because the model changed, but because fraud tactics evolved and no longer match the patterns it learned. An MLOps monitoring system tracking live precision against a labeled sample would catch this decline and trigger a retraining pipeline, rather than the degradation going unnoticed until it causes real business harm.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Vector databases are the retrieval backbone of nearly every production RAG system and semantic-search product. MLOps practices are what separate a model that works well in a research notebook from one that reliably serves millions of real users — the gap between the two is a large part of why so many promising ML projects never make it to sustained production use.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>Once a model is deployed, the work is done.</strong> Production models require ongoing monitoring — the world the model makes predictions about keeps changing, and the model doesn't automatically know that.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Vector search always returns the mathematically closest matches.</strong> Approximate nearest neighbor methods deliberately trade a small amount of accuracy for large speed gains — "approximate" is in the name for a reason, and it's a reasonable trade-off at scale.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> the majority of the engineering effort in a real AI product often goes into this operational layer — deployment, monitoring, retrieval infrastructure — not into training the model itself.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="bias-fairness.html"><span class="ns-eyebrow">Ethics</span>Bias & Fairness</a>
+        <a href="rag-agents.html"><span class="ns-eyebrow">NLP</span>RAG & AI Agents</a>
+        <a href="interpretability.html"><span class="ns-eyebrow">Ethics</span>Interpretability</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

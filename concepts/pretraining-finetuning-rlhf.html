@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pretraining, Fine-tuning & RLHF — AI, Explained</title>
+<meta name="description" content="How a raw language model becomes a helpful assistant — the three-stage pipeline of pretraining, fine-tuning, and reinforcement learning from human feedback.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>NLP & Language Models</h4>
+    <ul>
+      <li><a href="tokenization-embeddings.html">Tokenization & embeddings</a></li>
+      <li><a href="attention.html">Attention, intuitively</a></li>
+      <li><a href="transformers.html">The Transformer Architecture</a></li>
+      <li><a href="pretraining-finetuning-rlhf.html" class="current">Pretraining, fine-tuning & RLHF</a></li>
+      <li><a href="rag-agents.html">RAG & AI agents</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="transformers.html">The Transformer Architecture</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="rag-agents.html">RAG & AI Agents</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">NLP & Language Models &middot; Concept 04</span>
+    <h1>Pretraining, Fine-tuning & RLHF</h1>
+    <p class="dek">A freshly pretrained language model is not a chatbot — it's a very good autocomplete with no particular interest in being helpful, honest, or safe. Getting from one to the other takes two more deliberate training stages.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p><strong>Pretraining</strong> is where a model reads an enormous amount of text from the internet and books, learning to predict the next word — this is where nearly all of its raw knowledge and language ability comes from, but the result just continues text, it doesn't follow instructions or hold a conversation reliably.</p><p><strong>Fine-tuning</strong> then trains the model further on a smaller, curated set of example conversations — showing it what a good response to an instruction actually looks like. <strong>RLHF (Reinforcement Learning from Human Feedback)</strong> refines it further by having human raters compare pairs of model responses, training the model to produce outputs people actually prefer.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>Pretraining optimizes a single objective — next-token prediction — over trillions of tokens, using pure self-supervision (the "label" for each position is just the next real token, requiring no human annotation at this stage). This is enormously expensive but produces a general-purpose <strong>base model</strong>.</p><p><strong>Supervised fine-tuning (SFT)</strong> continues training on a much smaller dataset of high-quality instruction-response pairs, shifting the model's behavior toward following instructions. RLHF then trains a separate <strong>reward model</strong> to predict which of two responses humans would prefer, and uses reinforcement learning (commonly PPO, or newer methods like DPO) to adjust the language model's outputs to maximize that predicted reward — effectively teaching the model human preferences it can't get from raw text prediction alone.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">PRETRAINING</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">trillions of tokens</text>
+<text x="110.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">next-token prediction</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">BASE MODEL</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">knows a lot,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">follows nothing well</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FINE-TUNING</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">learns to follow</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">instructions</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RLHF</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">learns human</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">preferences</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Each stage narrows the model's behavior: pretraining builds broad capability, fine-tuning adds instruction-following, RLHF adds preference alignment.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">The same prompt at each stage</span>
+        <p>Prompt: "Explain photosynthesis." A <strong>base model</strong> might continue with something like more homework questions on the same topic, since that's a statistically plausible continuation of text that started that way. After <strong>fine-tuning</strong>, it directly answers the question with an explanation. After <strong>RLHF</strong>, it answers in a way human raters preferred during training — likely clearer, better organized, and appropriately hedged where the science is uncertain, because responses with those qualities were rated more highly.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Essentially every consumer-facing chatbot — ChatGPT, Claude, Gemini — goes through some version of this full pipeline. It's also why base models (available through some APIs) feel noticeably different to use than their chat-tuned counterparts, and why companies keep iterating on the fine-tuning and RLHF stages long after a base model is trained, since this is where most of the day-to-day behavior tuning happens.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>RLHF teaches the model new facts or knowledge.</strong> Nearly all factual knowledge comes from pretraining; RLHF shapes style, helpfulness, and safety behavior on top of what the model already knows.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Fine-tuning and RLHF are the same thing.</strong> Fine-tuning uses direct supervised examples; RLHF uses a learned reward signal and reinforcement learning — a fundamentally different training setup that can capture more nuanced preferences than a fixed set of examples can.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> pretraining builds the model's raw capability; everything after that is about directing that capability toward being useful and safe — which is why alignment work is a continuous, ongoing process, not a single step.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="rag-agents.html"><span class="ns-eyebrow">NLP</span>RAG & AI Agents</a>
+        <a href="interpretability.html"><span class="ns-eyebrow">Ethics</span>Interpretability</a>
+        <a href="agi-debate.html"><span class="ns-eyebrow">Ethics</span>The AGI Debate</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

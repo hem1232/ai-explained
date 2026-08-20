@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data, Features & Labels — AI, Explained</title>
+<meta name="description" content="The raw ingredients every machine learning model is built from: features, labels, and the datasets that hold them.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Foundations</h4>
+    <ul>
+      <li><a href="what-is-ai.html">What is AI, ML & DL?</a></li>
+      <li><a href="supervised-vs-unsupervised.html">Supervised vs. unsupervised vs. RL</a></li>
+      <li><a href="training-vs-inference.html">Training vs. inference</a></li>
+      <li><a href="data-features-labels.html" class="current">Data, features & labels</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="training-vs-inference.html">Training vs. Inference</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="regression.html">Linear & Logistic Regression</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Foundations &middot; Concept 04</span>
+    <h1>Data, Features & Labels</h1>
+    <p class="dek">Before any algorithm matters, someone has to decide what the model actually sees. That choice shapes everything the model can possibly learn.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>feature</strong> is a measurable piece of information about something — a house's square footage, a customer's age, a pixel's brightness. Models don't see "a house"; they see a list of numbers describing it.</p><p>A <strong>label</strong> is the answer you want the model to learn to predict — the actual sale price, whether the customer churned, what digit a handwritten image shows. In supervised learning, every training example pairs features with a label.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>A dataset is typically represented as a matrix where each row is an example and each column is a feature; for supervised learning, a separate vector holds the corresponding labels. <strong>Feature engineering</strong> is the process of selecting or transforming raw data into a form a model can use effectively — for instance, converting a timestamp into "day of week" if that pattern matters more than the raw time.</p><p>Data is usually split into a <strong>training set</strong> (used to fit the model), a <strong>validation set</strong> (used to tune choices like model complexity), and a <strong>test set</strong> (used once, at the end, to estimate real-world performance) — keeping these separate is what prevents a model's reported accuracy from being misleadingly optimistic.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">RAW DATA</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">e.g. a house listing</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">FEATURES</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">sqft, bedrooms,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">location score</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">LABEL</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">actual sale price</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">(what we predict)</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TRAIN / VAL / TEST</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">split for honest</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">evaluation</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Raw information becomes features; the thing you're trying to predict is the label; the dataset gets split so evaluation stays honest.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Turning a house listing into training data</span>
+        <p>A real estate listing — "3-bed, 2-bath, 1,450 sqft, built 1998, downtown Austin, sold for $412,000" — becomes one training row: features <code>[3, 2, 1450, 1998, location_score=0.82]</code> and label <code>412000</code>. Do this for 50,000 historical listings, split 70% training / 15% validation / 15% test, and you have a dataset a regression model can learn from.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Feature quality is often the single biggest factor in a model's real-world performance — more than the choice of algorithm. Data teams at most companies spend far more time on cleaning, labeling, and engineering features than on tuning models, which is why "data-centric AI" has become as important a discipline as model architecture itself.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>More data always beats better features.</strong> Garbage features with lots of data still produce a poor model — quality and relevance usually matter more than raw volume.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Labels are always objective ground truth.</strong> Labels are often produced by human annotators, which means they can carry the same biases and inconsistencies as any human judgment.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> a model can only be as good as the features and labels it's trained on — most of the real "intelligence" work in a project happens before training even starts.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="regression.html"><span class="ns-eyebrow">Core ML</span>Linear & Logistic Regression</a>
+        <a href="overfitting-regularization.html"><span class="ns-eyebrow">Core ML</span>Overfitting & Regularization</a>
+        <a href="neural-networks.html"><span class="ns-eyebrow">Deep Learning</span>How Neural Networks Learn</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

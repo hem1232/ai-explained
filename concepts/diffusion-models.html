@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diffusion Models, Step by Step — AI, Explained</title>
+<meta name="description" content="How diffusion models generate images from noise — the mechanism behind tools like Midjourney, Stable Diffusion, and DALL·E.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Generative AI</h4>
+    <ul>
+      <li><a href="diffusion-models.html" class="current">Diffusion models, step by step</a></li>
+      <li><a href="gans-vaes.html">GANs & VAEs</a></li>
+      <li><a href="multimodal-models.html">Multimodal models</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="rag-agents.html">RAG & AI Agents</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="gans-vaes.html">GANs & VAEs</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Generative AI &middot; Concept 01</span>
+    <h1>Diffusion Models, Step by Step</h1>
+    <p class="dek">The dominant technique behind AI image generation works almost backward from how you'd expect: it learns to destroy images with noise, then runs that process in reverse to create new ones.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>Training a diffusion model starts by taking real images and gradually adding random noise to them over many steps, until they become pure static. The model's job during training is to learn to reverse each individual step — predict what the slightly-less-noisy version looked like.</p><p>To generate a new image, you start from pure random noise and repeatedly ask the trained model to remove a little bit of noise, step by step — after enough steps, coherent structure emerges, and text prompts guide that process toward a specific subject at each step.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>The <strong>forward process</strong> adds Gaussian noise to an image over <code>T</code> timesteps according to a fixed schedule, until the image is statistically indistinguishable from pure noise. The model is trained to predict the noise that was added at each step, given the noisy image and the timestep — equivalent to learning the <strong>reverse process</strong>, <code>p(x_{t-1} | x_t)</code>.</p><p>Generation runs this reverse process from pure noise, iteratively denoising over many steps. <strong>Text conditioning</strong> (as in text-to-image models) injects the prompt's embedding into the denoising network at each step — typically via cross-attention, similar to how a Transformer's attention mechanism relates different pieces of information — steering the emerging image toward matching the text description.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">REAL IMAGE</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">training data</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">ADD NOISE</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">forward process,</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">many small steps</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">PURE NOISE</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">model learns to</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">reverse each step</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">GENERATE:</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">denoise from random</text>
+<text x="698.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">noise → new image</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Training teaches the model to undo noise one step at a time; generation runs that learned reversal starting from pure random noise.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">What one denoising step does</span>
+        <p>At generation step 40 of 50, the image is still mostly blurry static with faint suggestions of shape. The model looks at this noisy image plus the text prompt "a red fox in snow," and predicts what noise to subtract to move one step closer to a clean image — perhaps sharpening a vague reddish blob into something more clearly fox-shaped. Repeat this prediction-and-subtraction 10 more times, and the final result is a coherent image; each individual step only makes a small, local improvement.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Diffusion models are the technique behind Stable Diffusion, Midjourney, and DALL·E for images, and increasingly power video generation (like Sora) and audio synthesis as well — largely displacing GANs as the dominant generative approach because they tend to produce more stable training and higher-fidelity, more diverse outputs.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>The model "paints" an image the way a human artist would, stroke by stroke.</strong> It's refining an entire image's worth of noise simultaneously at each step — more like a photo slowly coming into focus than a canvas being painted left to right.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>More denoising steps always means a better image.</strong> Past a certain point, additional steps give diminishing returns; modern techniques (like distillation) can produce comparable quality in far fewer steps, which is why some tools can generate images in seconds rather than minutes.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> a diffusion model doesn't "know" what a fox looks like in the way a database does — it's learned a general-purpose noise-removal function, and steering it with a text prompt shapes what that removal converges toward.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="gans-vaes.html"><span class="ns-eyebrow">Generative AI</span>GANs & VAEs</a>
+        <a href="multimodal-models.html"><span class="ns-eyebrow">Generative AI</span>Multimodal Models</a>
+        <a href="computer-vision-speech.html"><span class="ns-eyebrow">Applied AI</span>Computer Vision & Speech</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>

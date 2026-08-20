@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multimodal Models — AI, Explained</title>
+<meta name="description" content="How AI models process and generate across multiple types of data at once — text, images, audio, and video in a single system.">
+<link rel="stylesheet" href="../styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main class="wrap concept-page">
+  <aside class="concept-sidebar">
+    <h4>Generative AI</h4>
+    <ul>
+      <li><a href="diffusion-models.html">Diffusion models, step by step</a></li>
+      <li><a href="gans-vaes.html">GANs & VAEs</a></li>
+      <li><a href="multimodal-models.html" class="current">Multimodal models</a></li>
+    </ul>
+    <div class="rel-box">
+      <span class="label">Prerequisites</span>
+      <a href="gans-vaes.html">GANs & VAEs</a>
+    </div>
+    <div class="rel-box">
+      <span class="label">Leads to</span>
+      <a href="computer-vision-speech.html">Computer Vision & Speech</a>
+    </div>
+  </aside>
+
+  <article class="concept-main">
+    <span class="kicker">Generative AI &middot; Concept 03</span>
+    <h1>Multimodal Models</h1>
+    <p class="dek">Most real-world understanding isn't confined to one type of data — a photo comes with a caption, a video comes with sound. Multimodal models are built to handle that mix natively.</p>
+
+    <div class="block">
+      <h2><span class="step-num">01</span> The plain-English version</h2>
+      <p>A <strong>multimodal model</strong> can take in — and sometimes produce — more than one type of data: text and images together, or text, images, and audio all at once, rather than being restricted to just one. Ask it about a photo, and it reasons about the image content directly, not from a text description someone else wrote.</p><p>The core challenge is getting fundamentally different kinds of data — pixels, sound waves, word sequences — into a shared representation the same underlying model can reason over consistently.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">02</span> The formal version</h2>
+      <p>A common approach: a modality-specific <strong>encoder</strong> (e.g. a vision Transformer for images, an audio encoder for sound) converts each input into embeddings in the same numerical format the language model already uses for text tokens. These embeddings are then fed into a shared Transformer alongside text token embeddings, letting self-attention relate a word directly to a specific region of an image or a specific moment in an audio clip.</p><p>Some multimodal systems are <strong>natively trained</strong> end-to-end on mixed data from the start; others are built by connecting separately pretrained encoders to a pretrained language model via a lightweight adapter layer, then fine-tuning the combination — a faster and cheaper approach that reuses existing single-modality models rather than training everything from scratch.</p>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">03</span> The flow</h2>
+      <div class="diagram-card">
+        <svg viewBox="0 0 808 170" xmlns="http://www.w3.org/2000/svg">
+<rect x="30" y="30" width="160" height="110" rx="12" fill="#E8ECFF" stroke="#3557FF" stroke-width="1.5"/>
+<text x="110.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">IMAGE ENCODER</text>
+<text x="110.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">photo → embeddings</text>
+<rect x="226" y="30" width="160" height="110" rx="12" fill="#E4F3EE" stroke="#1F8A70" stroke-width="1.5"/>
+<text x="306.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">TEXT ENCODER</text>
+<text x="306.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"what breed is"</text>
+<text x="306.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">→ embeddings</text>
+<rect x="422" y="30" width="160" height="110" rx="12" fill="#FDF1DC" stroke="#F2A93B" stroke-width="1.5"/>
+<text x="502.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">SHARED MODEL</text>
+<text x="502.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">attention relates</text>
+<text x="502.0" y="99" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">words to image regions</text>
+<rect x="618" y="30" width="160" height="110" rx="12" fill="#FFFFFF" stroke="#D6DCE7" stroke-width="1.5"/>
+<text x="698.0" y="60" text-anchor="middle" font-family="IBM Plex Mono" font-size="12" fill="#12151C">OUTPUT</text>
+<text x="698.0" y="82" text-anchor="middle" font-family="Inter" font-size="10.5" fill="#4A5164">"a golden retriever"</text>
+<defs><marker id="af" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#B7C0D1"/></marker></defs>
+<line x1="190" y1="85.0" x2="223" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="386" y1="85.0" x2="419" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+<line x1="582" y1="85.0" x2="615" y2="85.0" stroke="#B7C0D1" stroke-width="1.5" marker-end="url(#af)"/>
+</svg>
+        <p class="diagram-caption">Different input types are each converted into the same kind of embedding space, letting one shared model reason across all of them together.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">04</span> Worked example</h2>
+      <div class="example-box">
+        <span class="label">Cross-modal attention in action</span>
+        <p>Given a photo of a kitchen and the question "is the stove on?", the model's attention mechanism connects the word "stove" to the specific image patches containing the stove — rather than the whole image indiscriminately — and connects "on" to visual cues like a lit burner or an illuminated display, combining both signals to produce a grounded answer instead of a generic guess.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">05</span> Where this shows up</h2>
+      <div class="usecase-box">
+        <span class="label">Real-world use</span>
+        <p>Multimodal models power visual question answering, image captioning, video understanding, accessibility tools that describe images for visually impaired users, and creative tools that generate images or video from a text prompt. Current frontier chat assistants (GPT-4/5-class, Claude, Gemini) are all multimodal, able to accept images and sometimes audio or video directly, alongside text.</p>
+      </div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">06</span> Common misconceptions</h2>
+            <div class="misconception"><span class="x">&#10005;</span><p><strong>A multimodal model just runs a separate captioning tool and reads the caption as text.</strong> True multimodal models reason directly over visual embeddings alongside text — they can pick up on details a generic caption would miss entirely.</p></div>
+      <div class="misconception"><span class="x">&#10005;</span><p><strong>Any model that outputs both text and images is "multimodal."</strong> A system that's really just two separate single-modality models glued together with no shared reasoning between them is a pipeline, not a genuinely multimodal model — the distinguishing feature is a shared representation the modalities interact within.</p></div>
+      <div class="misconception"><span class="check">&#10003;</span><p><strong>Correct framing:</strong> multimodality is fundamentally about a shared reasoning space across data types, not just accepting multiple input formats at the API level.</p></div>
+    </div>
+
+    <div class="block">
+      <h2><span class="step-num">07</span> Where to go next</h2>
+      <div class="next-steps">
+        <a href="computer-vision-speech.html"><span class="ns-eyebrow">Applied AI</span>Computer Vision & Speech</a>
+        <a href="agi-debate.html"><span class="ns-eyebrow">Ethics</span>The AGI Debate</a>
+        <a href="scaling-laws.html"><span class="ns-eyebrow">Ethics</span>Scaling Laws</a>
+      </div>
+    </div>
+  </article>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '../';</script>
+<script src="../scripts/main.js"></script>
+</body>
+</html>
