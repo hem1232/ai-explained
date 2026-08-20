@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI, Explained — How AI actually works, concept by concept</title>
+<meta name="description" content="Every AI and machine learning concept explained with plain-English intuition, flow diagrams, worked examples, and real-world use — from 'what is AI' to transformers and beyond.">
+<link rel="stylesheet" href="styles/main.css">
+</head>
+<body>
+
+<header class="site-header" id="site-header"></header>
+
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">A map of how artificial intelligence works</span>
+      <h1>Understand AI the way it's actually built — not the way it's marketed.</h1>
+      <p class="lede">Every term, every architecture, every "how does that even work" — explained with plain intuition first, a flow diagram second, and a worked example third. Start anywhere. Everything links to what it depends on.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="tracks.html">Browse all tracks →</a>
+        <a class="btn btn-ghost" href="concepts/what-is-ai.html">Start from zero</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="constellation-section">
+    <div class="wrap">
+      <div class="constellation-frame">
+        <div class="legend">
+          <span class="legend-item"><span class="legend-dot" style="border-color:var(--signal-blue)"></span> Foundations</span>
+          <span class="legend-item"><span class="legend-dot" style="border-color:var(--signal-teal)"></span> Deep Learning &amp; NLP</span>
+          <span class="legend-item"><span class="legend-dot" style="border-color:var(--signal-amber)"></span> Applied &amp; Frontier</span>
+        </div>
+        <svg id="constellation" viewBox="0 0 1000 440" xmlns="http://www.w3.org/2000/svg">
+          <!-- edges: prerequisite paths -->
+          <g class="edges">
+            <path class="edge" d="M120,220 C200,220 220,120 300,110" />
+            <path class="edge" d="M120,220 C200,220 220,300 300,320" />
+            <path class="edge" d="M300,110 C360,110 360,60 430,60" />
+            <path class="edge" d="M300,110 C380,150 400,180 470,190" />
+            <path class="edge" d="M300,320 C380,300 400,250 470,220" />
+            <path class="edge" d="M300,320 C370,360 400,380 470,380" />
+            <path class="edge" d="M470,190 C540,190 540,140 610,130" />
+            <path class="edge" d="M470,190 C540,200 560,230 630,235" />
+            <path class="edge" d="M470,220 C540,240 560,260 630,280" />
+            <path class="edge" d="M630,235 C700,235 700,190 770,175" />
+            <path class="edge" d="M630,235 C700,250 720,290 790,300" />
+            <path class="edge" d="M470,380 C560,395 600,400 660,400" />
+            <path class="edge" d="M660,400 C740,400 760,370 830,360" />
+            <path class="edge" d="M790,300 C850,300 860,320 900,330" />
+          </g>
+          <!-- nodes -->
+          <g class="nodes">
+            <g class="node foundations" data-href="concepts/what-is-ai.html">
+              <circle cx="120" cy="220" r="30"/>
+              <text x="120" y="224" text-anchor="middle">what is AI</text>
+            </g>
+            <g class="node foundations" data-href="concepts/supervised-vs-unsupervised.html">
+              <circle cx="300" cy="110" r="24"/>
+              <text x="300" y="114" text-anchor="middle">supervised</text>
+            </g>
+            <g class="node foundations" data-href="concepts/supervised-vs-unsupervised.html">
+              <circle cx="300" cy="320" r="24"/>
+              <text x="300" y="324" text-anchor="middle">unsupervised</text>
+            </g>
+            <g class="node foundations" data-href="concepts/regression.html">
+              <circle cx="430" cy="60" r="22"/>
+              <text x="430" y="64" text-anchor="middle">regression</text>
+            </g>
+            <g class="node deep" data-href="concepts/neural-networks.html">
+              <circle cx="470" cy="190" r="28"/>
+              <text x="470" y="194" text-anchor="middle">neural nets</text>
+            </g>
+            <g class="node foundations" data-href="concepts/decision-trees.html">
+              <circle cx="470" cy="220" r="20"/>
+              <text x="470" y="224" text-anchor="middle">trees</text>
+            </g>
+            <g class="node deep" data-href="concepts/evaluation-metrics.html">
+              <circle cx="470" cy="380" r="20"/>
+              <text x="470" y="384" text-anchor="middle">clustering</text>
+            </g>
+            <g class="node deep" data-href="concepts/cnns.html">
+              <circle cx="610" cy="130" r="22"/>
+              <text x="610" y="134" text-anchor="middle">CNNs</text>
+            </g>
+            <g class="node deep" data-href="concepts/transformers.html">
+              <circle cx="630" cy="235" r="30"/>
+              <text x="630" y="239" text-anchor="middle">transformers</text>
+            </g>
+            <g class="node applied" data-href="concepts/rnns-lstms.html">
+              <circle cx="630" cy="280" r="20"/>
+              <text x="630" y="284" text-anchor="middle">RNNs</text>
+            </g>
+            <g class="node applied" data-href="concepts/diffusion-models.html">
+              <circle cx="770" cy="175" r="22"/>
+              <text x="770" y="179" text-anchor="middle">diffusion</text>
+            </g>
+            <g class="node applied" data-href="concepts/rag-agents.html">
+              <circle cx="790" cy="300" r="24"/>
+              <text x="790" y="304" text-anchor="middle">RAG</text>
+            </g>
+            <g class="node applied" data-href="concepts/rag-agents.html">
+              <circle cx="900" cy="330" r="20"/>
+              <text x="900" y="334" text-anchor="middle">agents</text>
+            </g>
+            <g class="node applied" data-href="concepts/agi-debate.html">
+              <circle cx="660" cy="400" r="20"/>
+              <text x="660" y="404" text-anchor="middle">alignment</text>
+            </g>
+            <g class="node applied" data-href="concepts/agi-debate.html">
+              <circle cx="830" cy="360" r="22"/>
+              <text x="830" y="364" text-anchor="middle">AGI debate</text>
+            </g>
+          </g>
+        </svg>
+      </div>
+      <p class="diagram-caption">This is the actual site map. Lines show what builds on what — click any node to jump there.</p>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">The structure</span>
+        <h2>Ten tracks. Every concept, same four parts.</h2>
+        <p>No page assumes you memorized the last one — but no page dumbs things down either. Each concept gets: a plain-English explanation, the formal mechanics, a diagram of the actual process, and a worked example with real numbers.</p>
+      </div>
+      <div class="track-grid">
+        <div class="track-card">
+          <span class="track-index">01 · start here</span>
+          <h3>Foundations</h3>
+          <p>What "AI" even means, how machines learn from data, and the vocabulary everything else builds on.</p>
+          <ul class="track-topics">
+            <li><a href="concepts/what-is-ai.html">What is AI, ML, and deep learning →</a></li>
+            <li>Supervised vs. unsupervised vs. reinforcement learning</li>
+            <li>Training, inference, features, and data</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">02</span>
+          <h3>Core Machine Learning</h3>
+          <p>The classic algorithms that still power most real-world ML systems today.</p>
+          <ul class="track-topics">
+            <li>Regression &amp; classification</li>
+            <li>Decision trees &amp; ensembles</li>
+            <li>Overfitting &amp; evaluation metrics</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">03</span>
+          <h3>Neural Networks &amp; Deep Learning</h3>
+          <p>How a network of simple math functions learns to recognize patterns — from the perceptron to backpropagation.</p>
+          <ul class="track-topics">
+            <li><a href="concepts/neural-networks.html">How neural networks learn →</a></li>
+            <li>CNNs for images</li>
+            <li>RNNs &amp; LSTMs for sequences</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">04</span>
+          <h3>NLP &amp; Language Models</h3>
+          <p>How machines turn language into numbers — and how that leads to the models behind ChatGPT and friends.</p>
+          <ul class="track-topics">
+            <li>Tokenization &amp; embeddings</li>
+            <li>Attention</li>
+            <li><a href="concepts/transformers.html">The Transformer architecture →</a></li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">05</span>
+          <h3>Generative AI</h3>
+          <p>How models create rather than classify — images, audio, and text from noise.</p>
+          <ul class="track-topics">
+            <li>Diffusion models</li>
+            <li>GANs &amp; VAEs</li>
+            <li>Multimodal generation</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">06</span>
+          <h3>The LLM Ecosystem</h3>
+          <p>What happens after pretraining — the layer of techniques that turns a raw language model into a product.</p>
+          <ul class="track-topics">
+            <li>Fine-tuning &amp; RLHF</li>
+            <li>Prompt engineering</li>
+            <li>RAG &amp; AI agents</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">07</span>
+          <h3>Applied AI</h3>
+          <p>Where these ideas show up in shipped products, and the tools used to build them.</p>
+          <ul class="track-topics">
+            <li>Computer vision &amp; speech</li>
+            <li>Recommendation systems</li>
+            <li>PyTorch, TensorFlow, Hugging Face</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">08</span>
+          <h3>AI Infrastructure</h3>
+          <p>The unglamorous machinery that makes training and serving models possible at scale.</p>
+          <ul class="track-topics">
+            <li>GPUs, TPUs &amp; parallelism</li>
+            <li>Vector databases</li>
+            <li>MLOps &amp; model serving</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">09</span>
+          <h3>Ethics, Safety &amp; Alignment</h3>
+          <p>Where models go wrong, why, and what the field is doing about it.</p>
+          <ul class="track-topics">
+            <li>Bias &amp; fairness</li>
+            <li>Interpretability</li>
+            <li>Regulation &amp; governance</li>
+          </ul>
+        </div>
+        <div class="track-card">
+          <span class="track-index">10 · frontier</span>
+          <h3>Future &amp; Frontier</h3>
+          <p>The open questions the field itself hasn't settled — written honestly, not hyped.</p>
+          <ul class="track-topics">
+            <li>Scaling laws</li>
+            <li>The AGI debate</li>
+            <li>Emerging architectures</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script>window.SITE_ROOT = '';</script>
+<script src="scripts/main.js"></script>
+<script>
+  document.querySelectorAll('#constellation .node').forEach((n) => {
+    n.style.cursor = 'pointer';
+    n.addEventListener('click', () => {
+      const href = n.getAttribute('data-href');
+      if (href) window.location.href = href;
+    });
+  });
+</script>
+</body>
+</html>
